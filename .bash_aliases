@@ -21,7 +21,7 @@ BLUE="\[$ESC[${DULL};${FG_BLUE}m\]"
 YELLOW="\[$ESC[${DULL};${FG_YELLOW}m\]"
 
 
-export PS1="[${RED}\u${RESET}@${GREEN}\h${RESET}][${YELLOW}\W${RESET}]:\$ "
+export PS1="[${RED}\u${RESET}@${GREEN}\h${RESET}][${YELLOW}\W${RESET}] \$ "
 
 # Configs for history management
 export HISTFILE=~/.command_history

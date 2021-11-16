@@ -4,6 +4,7 @@ syntax on
 filetype plugin indent on
 
 set number
+set relativenumber
 set ruler
 set mouse=a
 set visualbell t_vb=
@@ -17,7 +18,7 @@ set expandtab
 set autoindent
 set smartindent
 set nobackup
-
+set scrolloff=8
 set hlsearch
 set ignorecase
 set smartcase
@@ -25,7 +26,7 @@ set incsearch
 set cmdheight=1
 
 " cursor motion 
-set scrolloff=10
+set scrolloff=8
 set backspace=indent,eol,start
 
 " set cursorline
@@ -36,7 +37,8 @@ set t_Co=256
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.vim/plugged')
 Plug 'preservim/nerdtree'
-Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline'
+Plug 'powerline/powerline'
 Plug 'https://tpope.io/vim/fugitive.git'
 
 " Plugin pour code HTML/CSS 
@@ -50,8 +52,8 @@ call plug#end()
 " ---------------------------------------------------------
 "  Nerd tree configuration
 " ---------------------------------------------------------
-nnoremap <C-n> :NERDTreeMirror<CR>:NERDTreeFocus<CR>
-nnoremap <C-f> :NERDTreeFind<CR>
+nnoremap <C-n> :NERDTreeToggle<CR>
+" nnoremap <C-f> :NERDTreeFind<CR>
 
 " Start NERDTree when Vim starts with a directory argument.
 autocmd StdinReadPre * let s:std_in=1
