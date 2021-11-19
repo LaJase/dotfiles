@@ -1,27 +1,27 @@
-### EXPORT ###
-# creation du prompt
-DULL=0
+#############################################################################
+###
+###   .profile
+###
+#############################################################################
+#
+# Execution du .profile general
+#
+#
+. /devt/conf/.profile
+# Execution du .profile commun au service
+#
+#
+#export PATH=$CDTNG_BIN:$PATH
+. $DIR_GROUP/.profile
 
-FG_RED=31
-FG_GREEN=32
-FG_YELLOW=33
-FG_BLUE=34
-FG_BLACK=30
-FG_WHITE=37
-FG_NULL=00
+#export SHELL=/bin/ksh
+#export SSHELL=/bin/ksh
+export PATH=$CDTNG_BIN:$PATH
+#################################### fin ####################################
 
-ESC="\033"
-NORMAL="\[$ESC[m\]"
-RESET="\[$ESC[${DULL};${FG_WHITE};${BG_NULL}m\]"
+# environment
+dotfileFolder=~/dotfiles
 
-BLACK="\[$ESC[${DULL};${FG_BLACK}m\]"
-RED="\[$ESC[${DULL};${FG_RED}m\]"
-GREEN="\[$ESC[${DULL};${FG_GREEN}m\]"
-BLUE="\[$ESC[${DULL};${FG_BLUE}m\]"
-YELLOW="\[$ESC[${DULL};${FG_YELLOW}m\]"
-
-export PS1="[${RED}\u${RESET}@${GREEN}\h${RESET}][${YELLOW}\W${RESET}]:\$ "
-
-# Configs for history management
-export HISTFILE=~/.command_history
-export HISTCONTROL=ignoredups:erasedups
+source ${dotfileFolder}/.bashrc
+source ${dotfileFolder}/.alias
+source ${dotfileFolder}/.custom_functions
