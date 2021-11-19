@@ -1,0 +1,108 @@
+#        _ _____  _____
+#       | |  __ \|_   _|
+#       | | |__| | | |
+#   _   | |  _  /  | |
+#  | |__| | | \ \ _| |_
+#   \____/|_|  \_\_____|
+#
+# All my daily functions.
+
+# ------------------------------------------------------------------------------
+# Function to know which function are available
+# ------------------------------------------------------------------------------
+function available_functions()
+{
+    echo -e "List of available functions"
+    echo -e "\t go"
+    echo -e "\t delete_from_bde"
+    echo -e "\t retrieve_from_bde"
+    echo -e "\t package"
+    echo -e "\t get_from_data_path"
+}
+
+
+# ------------------------------------------------------------------------------
+#          Fonction pour connexion p** en tant que SA-R970-OPERA
+# ------------------------------------------------------------------------------
+function go()
+{
+    ssh -X -q SA-R970-OPERA@r970fr0${1}
+}
+
+
+# ------------------------------------------------------------------------------
+#              Fonction pour la suppression d'un entre dans BDE
+# ------------------------------------------------------------------------------
+function delete_from_bde()
+{
+    if [ $# -ne 3 ]; then
+        echo " "
+        echo "Usage : delete_from_bde {AIRCRAFT_NUMBER} {TEST} {IEV}"
+        echo " "
+        echo " Example : delete_from_bde V6900 P0001 21"
+        echo " "
+        return 255
+    fi
+    AIRCRAFT_NUMBER=$1
+    TEST=$2
+    IEV=$3
+    URL_BDE="http://ida-r970.eu.airbus.corp:8970"
+    echo "Deleting ${AIRCRAFT_NUMBER} ${TEST} ${IEV}"
+    java -jar /test.RHEL5X64/java/isx_zdt_client.jar --host $URL_BDE -kl SA-R970-WEB deleteEssaiIev ${AIRCRAFT_NUMBER} ${TEST} ${IEV}
+}
+
+# ------------------------------------------------------------------------------
+#               Alias pour la recuperation d'une entre dans BDE
+# ------------------------------------------------------------------------------
+function retrieve_from_bde()
+{
+    if [ $# -ne 3 ]; then
+        echo " "
+        echo "Usage : retrieve_from_bde {AIRCRAFT_NUMBER} {TEST} {IEV}"
+        echo " "
+        echo " Example : retrieve_from_bde V6900 P0001 21"
+        echo " "
+        return 255
+    fi
+    AIRCRAFT_NUMBER=$1
+    TEST=$2
+    IEV=$3
+    URL_BDE="http://ida-r970.eu.airbus.corp:8970"
+    echo "retrieving ${AIRCRAFT_NUMBER} ${TEST} ${IEV}"
+    java -jar /test.RHEL5X64/java/isx_zdt_client.jar --host $URL_BDE -kl SA-R970-WEB retrieve ${AIRCRAFT_NUMBER} ${TEST} 1 ${IEV} 1
+}
+
+# ------------------------------------------------------------------------------
+#                   Alias pour la gnration d'un package APTE
+# ------------------------------------------------------------------------------
+function Package()
+{
+    CONFFILE=$1
+    ssh evfr0c01 "/test.RHEL5X64/exe/irlU_PackageManager.sh  -mode=script -model=generation  -file=$CONFFILE"
+}
+
+# ------------------------------------------------------------------------------
+#         Fonction permettant de trouver un fichier dat dans le DATAPATH
+# ------------------------------------------------------------------------------
+function get_from_datapath()
+{
+    echo ""
+    local file=$1
+    for i in `echo $DATAPATH | sed 's/:/ /g'`
+    do
+        if [ -s $i/$file ]; then
+            echo "File found in DATAPATH : $i"
+            echo -e "$(ls $i/$file)\n"
+            break
+        elif [ -s $i/dat/$file ]; then
+            echo "File found in DATAPATH : $i"
+            echo -e "$(ls $i/dat/$file)\n"
+            break
+        fi
+    done
+}
+#
+# ==============================================================================
+# Don't forget to inform this file has been sourced
+# ==============================================================================
+echo -e ".custom_functions \tfile from $USER loaded"
