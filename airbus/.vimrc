@@ -1,8 +1,12 @@
 set nocompatible
-set showcmd
 set expandtab
 set number
-"set ts=4 sw=4
+
+"Menus
+set showcmd            " Show successfuly executed commands
+set wildmenu           " Enable menu used for completion of comands
+set completeopt=menu,menuone,preview " Completion option
+set clipboard=unnamed  " Clipboard used by system that default copy paste
 
 set hlsearch
 set ignorecase
