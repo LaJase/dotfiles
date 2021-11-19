@@ -1,17 +1,26 @@
-set nocompatible
-set expandtab
-set number
+"        _ _____  _____
+"       | |  __ \|_   _|
+"       | | |__| | | |
+"   _   | |  _  /  | |
+"  | |__| | | \ \ _| |_
+"   \____/|_|  \_\_____|
+"
+" All my daily aliases.
 
-"Menus
+
+set nocompatible
 set showcmd            " Show successfuly executed commands
 set wildmenu           " Enable menu used for completion of comands
 set completeopt=menu,menuone,preview " Completion option
 set clipboard=unnamed  " Clipboard used by system that default copy paste
+set expandtab
+set number
 
 set hlsearch
 set ignorecase
 set smartcase
 set incsearch
+set scrolloff=10
 
 set tabstop=4
 set shiftwidth=4
@@ -28,6 +37,7 @@ filetype plugin indent on
 set directory^=${HOME}/.vim/swap/
 
 highlight Search ctermbg=Magenta ctermfg=White
+
 
 " ---------------------- Custom Bindings --------------------------------------
 " Search for string underneath cursor in directory
@@ -48,6 +58,7 @@ nnoremap <F7> <S-V>:center<CR>^i=<Space><ESC>$a<Space>=<ESC>0ver=<S-R>#<Space><E
 
 " -------- version
 nnoremap <F8> <S-V>:center<CR>^i-<Space><ESC>$a<Space>-<ESC>0ver-<S-R>#<Space><ESC>$40a-<ESC>81<Bar>D
+nnoremap <F9> <S-V>:center<CR>^i <Space><ESC>$a<Space>-<ESC>0ver <S-R>#<Space><ESC>$40a <ESC>81<Bar>D
 
 " F5 function description
 nnoremap <F5> :r!cat ${HOME}/.vim/ftplugin/function-comment-sh<CR><CR>5k<F7>
@@ -64,6 +75,7 @@ nnoremap <buffer> <F6> <S-V>:center<CR>0r#$40a<Space><ESC>81<Bar>Dr#
 "       {TEST}
 " <
 nnoremap ,{ bi{<ESC>ea}<ESC>
+
 
 " All config for NERD_tree
 "let g:NERDTreeDirArrows = 0
