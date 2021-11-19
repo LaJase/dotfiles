@@ -1,110 +1,99 @@
-echo "ON PREND EN COMPTE LE .ALIAS"
-alias titi='echo "ON PREND EN COMPTE LE .ALIAS"'
-FONCTION=`cat .fonction  2>/dev/null`
+#        _ _____  _____
+#       | |  __ \|_   _|
+#       | | |__| | | |
+#   _   | |  _  /  | |
+#  | |__| | | \ \ _| |_
+#   \____/|_|  \_\_____|
+#
+# All my daily aliases.
 
-if [ "$FONCTION" ] ; then
-rm  .fonction
-. $FONCTION
-sleep 1
-exit
-fi
 
-# permet d'avoir le compile.sh
-export PATH=/home/devlog/prog/ng6e836/scripts:$PATH
-
-#Pour avoir un eclipse digne de ce nom
-alias Eclipse='/home/devlog/prog/ng6e836/eclipse/eclipse'
-
-# jOpera en mode test
-alias jOperaTest='isf_jOperaTest.sh < /nas/devlog/prog/ng6e836/prog/utils/jOpera_scenar'
-
-# Alias generaux
-alias ll='ls -l --color=tty'
+# ------------------------------------------------------------------------------
+# General aliases
+# ------------------------------------------------------------------------------
+alias ls='ls --color=auto'
+alias ll='ls -l'
 alias scp='scp -q'
 alias lrt='ls -lrt'
 alias la='ls -alrt'
-alias nas='cd /nas/devlog/prog/ng6e836/'
 alias less='less -R'
 alias grep='grep --color=auto'
 
-# Alias permettant l'acc▒s aux fichiers usines en fontion du d▒pot
+# ------------------------------------------------------------------------------
+# Aliases for navigation through FT-DC
+# ------------------------------------------------------------------------------
+alias nas='cd /nas/devlog/prog/ng6e836/'
+
+# ------------------------------------------------------------------------------
+# Aliases for navigation through ft-dev
+# ------------------------------------------------------------------------------
 alias CUB='cd /developpement/usines/CUB/ng6e836; ll'
 alias TLM='cd /developpement/usines/TLM/ng6e836; ll'
 alias TD='cd /developpement/usines/TD/ng6e836; ll'
 alias ARCHI='cd /developpement/usines/ARCHITECTURE/ng6e836; ll'
 
+# ------------------------------------------------------------------------------
 # alias pour git
+# ------------------------------------------------------------------------------
+alias addup='git add -u'
+alias addall='git add .'
+alias branch='git branch'
+alias checkout='git checkout'
+alias clone='git clone'
+alias commit='git commit -m'
+alias fetch='git fetch'
+alias pull='git pull origin'
+alias push='git push origin'
 alias gs='git status -s'
 
-# Alias pour connexion p** en tant que SA-R970-OPERA
-function go() {
-        MACHINE=$1
-                ssh -X -q SA-R970-OPERA@r970fr0${MACHINE}
-}
 
-# Alias pour la suppression d'un entr▒e dans BDE
-function delete_from_bde() {
+# ------------------------------------------------------------------------------
+# Alias pour tmux
+# ------------------------------------------------------------------------------
+alias e='tmux split-window -h vim $@'
 
-        if [ $# -ne 3 ]; then
-                echo " "
-                echo "Usage : delete_from_bde {AIRCRAFT_NUMBER} {TEST} {IEV}"
-                echo " "
-                echo " Example : delete_from_bde V6900 P0001 21"
-                echo " "
-                return 255
-        fi
-        AIRCRAFT_NUMBER=$1
-        TEST=$2
-        IEV=$3
-        URL_BDE="http://ida-r970.eu.airbus.corp:8970"
-        echo "Deleting ${AIRCRAFT_NUMBER} ${TEST} ${IEV}"
-        java -jar /test.RHEL5X64/java/isx_zdt_client.jar --host $URL_BDE -kl SA-R970-WEB deleteEssaiIev ${AIRCRAFT_NUMBER} ${TEST} ${IEV}
-}
-
-# Alias pour la recuperation d'une entr▒e dans BDE
-function retrieve_from_bde() {
-
-        if [ $# -ne 3 ]; then
-                echo " "
-                echo "Usage : retrieve_from_bde {AIRCRAFT_NUMBER} {TEST} {IEV}"
-                echo " "
-                echo " Example : retrieve_from_bde V6900 P0001 21"
-                echo " "
-                return 255
-        fi
-        AIRCRAFT_NUMBER=$1
-        TEST=$2
-        IEV=$3
-        URL_BDE="http://ida-r970.eu.airbus.corp:8970"
-        echo "retrieving ${AIRCRAFT_NUMBER} ${TEST} ${IEV}"
-        java -jar /test.RHEL5X64/java/isx_zdt_client.jar --host $URL_BDE -kl SA-R970-WEB retrieve ${AIRCRAFT_NUMBER} ${TEST} 1 ${IEV} 1
-}
-
+# ------------------------------------------------------------------------------
 # Pour connection ininterrompues sur ft-service
+# ------------------------------------------------------------------------------
 alias ftservice='ssh -X -o "ServerAliveInterval 30" ft-service'
 
-# Alias pour la generation d'un package APTE
-function Package() {
-        CONFFILE=$1
-                ssh evfr0c01 "/test.RHEL5X64/exe/irlU_PackageManager.sh  -mode=script -model=generation  -file=$CONFFILE"
-}
+# ------------------------------------------------------------------------------
+#Pour avoir un eclipse un peu moins a chier...
+# ------------------------------------------------------------------------------
+alias Eclipse='/home/devlog/prog/ng6e836/eclipse/eclipse'
 
-# Fonction permettant de trouver un fichier dat dans le DATAPATH
-function get_from_datapath()
-{
-    echo ""
-    local file=$1
-    for i in `echo $DATAPATH | sed 's/:/ /g'`
-    do
-       if [ -s $i/$file ]; then
-          echo "File found in DATAPATH : $i"
-          echo -e "$(ls $i/$file)\n"
-          break
-       elif [ -s $i/dat/$file ]; then
-          echo "File found in DATAPATH : $i"
-          echo -e "$(ls $i/dat/$file)\n"
-          break
-       fi
-    done
-}
+# ==============================================================================
+#
+#         OLD aliases used by the time I was in Dev A/C factory.
+#
+# ==============================================================================
+# Alias permettant la connexion sur CGIB SA
+alias cgib='ssh -Y root@cubfte1cgibsa'
 
+# Connection sur serveur
+alias tlmfr0p01='ssh -AY tlmfr0p01'
+alias fthp='ssh -AY fthp'       #connection pour gestion LOM
+
+# Aliases permettant des connextions SSH sur les diffrents CUB
+# Connections SSH pour banc A350
+alias devcub='ssh -AY devcub06'
+alias cubst350='ssh -tAY devcub06 ssh -AY root@cubst350'
+alias cubfte1='ssh -tAY devcub06 ssh -tAY root@cubst350 ssh -AY cubfte1x'
+alias cubop2x='ssh -tAY devcub06 ssh -tAY root@cubst350 ssh -AY cubop2x'
+alias cubop1x='ssh -tAY devcub06 ssh -tAY root@cubst350 ssh -AY cubop1x'
+alias cubnetx='ssh -tAY devcub06 ssh -tAY root@cubst350 ssh -AY cubnetx'
+
+# Connections SSH pour le banc Meneti light
+alias cubmeneti='ssh -tAY devcub06 ssh -AY root@cubmeneti'
+alias cubiox='ssh -tAY devcub06 ssh -tAY root@cubmeneti ssh -AY cubiox'
+
+# Connections SSH pour banc NEO Heavy
+alias cubstneo='ssh -t -AY devcub06 ssh -AY root@cubstneo'
+alias cubfte1neo='ssh -t -AY devcub06 ssh -tAY root@cubstneo ssh -AY cubfte1x'
+alias cubop2neo='ssh -t -AY devcub06 ssh -tAY root@cubstneo ssh -AY cubop2x'
+alias cubop1neo='ssh -t -AY devcub06 ssh -tAY root@cubstneo ssh -AY cubop1x'
+
+# ==============================================================================
+# Don't forget to inform this file has been sourced
+# ==============================================================================
+echo -e ".alias \t\t\tfile from $USER loaded"
