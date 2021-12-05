@@ -53,7 +53,8 @@ GREEN="\[$ESC[${DULL};${FG_GREEN}m\]"
 BLUE="\[$ESC[${DULL};${FG_BLUE}m\]"
 YELLOW="\[$ESC[${DULL};${FG_YELLOW}m\]"
 
-export PS1="[${RED}\u${RESET}@${GREEN}\h${RESET}][${YELLOW}\W${RESET}]:\$ "
+export PS1="\n\t [${RED}\u${RESET}@${GREEN}\h${RESET}][${YELLOW}\W${RESET}] \$(__git_ps1 '%s'):\$ "
+# export PS1="\n\A - \w \$(__git_ps1 'branch:%s')\n> "
 
 # ------------------------------------------------------------------------------
 # exports
