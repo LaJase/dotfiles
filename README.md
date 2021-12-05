@@ -3,7 +3,8 @@ Warning : Don’t blindly use my settings unless you know what that entails
 To manage it, I use git bare repositories
 
 # How to install it from new machine
-I'm not e genius and I found all info here : [Atlassian dotfiles tuto](https://www.atlassian.com/git/tutorials/dotfiles)
+I found all info here : [Atlassian dotfiles tuto](https://www.atlassian.com/git/tutorials/dotfiles)
+
 ```shell
 # Clone the git repository
 git clone --bare git@github.com:LaJase/dotfiles.git $HOME/.dotfiles
@@ -35,7 +36,7 @@ config checkout
 ```
 
 If you want to avoid untracked files on git status command :
-```
+```shell
 config config --local status.showUntrackedFiles no
 ```
 
@@ -49,21 +50,24 @@ config commit -m "Add bashrc"
 config push
 ```
 
+# Script to automatize all commands
 An example of installation script could be :
 ```shell
-git clone --bare https://bitbucket.org/durdn/cfg.git $HOME/.cfg
 function config {
-    /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME $@
-
+    /usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME $@
 }
-mkdir -p .config-backup
+
+git clone --bare git@github.com:LaJase/dotfiles.git $HOME/.dotfiles
+
 config checkout
 if [ $? = 0 ]; then
-echo "Checked out config.";
+    echo "Checked out config.";
 else
-echo "Backing up pre-existing dot files.";
-config checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
-fi;
+    echo "Backing up pre-existing dot files."
+    mkdir -p ~/.config-backup
+    config checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
+fi
+
 config checkout
 config config status.showUntrackedFiles no
 ```

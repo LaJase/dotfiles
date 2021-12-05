@@ -62,7 +62,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-surround'
     "
     "Colorschemes
-    Plug 'morhetz/gruvbox'
+    Plug 'gruvbox-community/gruvbox'
     Plug 'joshdick/onedark.vim'
     "
     "Display bar
@@ -77,8 +77,12 @@ call plug#end()
 " ---------------------------------------------------------
 "  Nerd tree configuration
 " ---------------------------------------------------------
-" nnoremap <C-n> :NERDTreeToggle<CR>
-nnoremap <C-n> :NERDTreeFind<CR>
+nnoremap <C-n> :NERDTreeToggle<CR>
+" nnoremap <C-n> :NERDTreeFind<CR>
+
+let g:NERDTreeShowHidden = 1
+let g:NERDTreeIgnore = ['node_modules']
+let NERDTreeStatusline='NERDTree'
 
 " Start NERDTree when Vim starts with a directory argument.
 autocmd StdinReadPre * let s:std_in=1
