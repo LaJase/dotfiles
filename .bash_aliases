@@ -26,3 +26,6 @@ export PS1="[${RED}\u${RESET}@${GREEN}\h${RESET}][${YELLOW}\W${RESET}] \$ "
 # Configs for history management
 export HISTFILE=~/.command_history
 export HISTCONTROL=ignoredups:erasedups
+
+# For git management
+alias config='/usr/bin/git --git-dir=$HOME/.dotfile/ --work-tree=$HOME'
