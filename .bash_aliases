@@ -23,7 +23,7 @@ alias egrep='egrep --color=auto'
 # ------------------------------------------------------------------------------
 # alias pour git
 # ------------------------------------------------------------------------------
-alias config='/usr/bin/git --git-dir=$HOME/.dotfile/ --work-tree=$HOME'
+alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias dotadd='config add'
 alias dotcommit='config commit -m'
 alias dotfetch='config fetch'
