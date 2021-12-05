@@ -1,8 +1,8 @@
-#        _ _____  _____
+#        _ _____  _____ 
 #       | |  __ \|_   _|
-#       | | |__| | | |
-#   _   | |  _  /  | |
-#  | |__| | | \ \ _| |_
+#       | | |__| | | |  
+#   _   | |  _  /  | |  
+#  | |__| | | \ \ _| |_ 
 #   \____/|_|  \_\_____|
 #
 # All my daily aliases.
@@ -45,7 +45,9 @@ alias fetch='git fetch'
 alias pull='git pull origin'
 alias push='git push origin'
 alias gs='git status -s'
-
+# alias lg1="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all"
+alias lg1="git fetch --prune && git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) -%C(bold yellow)%d%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all"
+alias lg2="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all"
 
 # ------------------------------------------------------------------------------
 # Alias pour tmux
@@ -70,11 +72,11 @@ alias Eclipse='/home/devlog/prog/ng6e836/eclipse/eclipse'
 # Alias permettant la connexion sur CGIB SA
 alias cgib='ssh -Y root@cubfte1cgibsa'
 
-# Connection sur serveur
+# Connection sur serveur 
 alias tlmfr0p01='ssh -AY tlmfr0p01'
-alias fthp='ssh -AY fthp'       #connection pour gestion LOM
+alias fthp='ssh -AY fthp'	#connection pour gestion LOM
 
-# Aliases permettant des connextions SSH sur les diffrents CUB
+# Aliases permettant des connextions SSH sur les diff�rents CUB
 # Connections SSH pour banc A350
 alias devcub='ssh -AY devcub06'
 alias cubst350='ssh -tAY devcub06 ssh -AY root@cubst350'
