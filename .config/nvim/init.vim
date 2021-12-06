@@ -48,37 +48,83 @@ syntax on
 filetype plugin indent on
 autocmd BufNew,BufNewFile,BufRead *.md setfiletype markdown
 
+" ---------------------------------------------------------
+" Basic remaps 
+" ---------------------------------------------------------
+nnoremap wo <C-w>o
+nnoremap wc <C-w>c
+nnoremap ws <C-w>s
+nnoremap wv <C-w>v
+
+nnoremap wh <C-w>h
+nnoremap wj <C-w>j
+nnoremap wk <C-w>k
+nnoremap wl <C-w>l
+map w<left> <C-w>h
+map w<up> <C-w>k
+map w<down> <C-w>j
+map w<right> <C-w>l
+" Resize window
+nmap <C-w><left> <C-w><
+nmap <C-w><right> <C-w>>
+nmap <C-w><up> <C-w>+
+nmap <C-w><down> <C-w>-
+
+nnoremap <leader><Space> :noh<CR>
 
 " ---------------------------------------------------------
 " Plugins manager
 " ---------------------------------------------------------
-call plug#begin('~/.vim/plugged')
+call plug#begin()
     Plug 'preservim/nerdtree'
     Plug 'preservim/nerdcommenter'
     Plug 'mhinz/vim-startify'
+    Plug 'ctrlpvim/ctrlp.vim'
     
     " Plugin pour code HTML/CSS 
     Plug 'mattn/emmet-vim' 
     Plug 'tpope/vim-surround'
-    "
+    
     "Colorschemes
     Plug 'gruvbox-community/gruvbox'
     Plug 'joshdick/onedark.vim'
-    "
+    
     "Display bar
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
     
-    "Icons (Nerd font support)
+    " Git plugin
+    Plug 'tpope/vim-fugitive'
+    Plug 'tpope/vim-rhubarb'
+
+    " Icons (Nerd font support)
     Plug 'ryanoasis/vim-devicons'
+
+    " close symbols
+    Plug 'cohama/lexima.vim'
 call plug#end()
 
 
 " ---------------------------------------------------------
+" Startify config. Add bookmarks for config files
+" ---------------------------------------------------------
+let g:startify_lists = [
+            \ { 'type': 'bookmarks', 'header': ['   Bookmarks']       },
+            \ { 'type': 'files',     'header': ['   MRU']             },
+            \ { 'type': 'dir',       'header': ['   MRU '. getcwd()]  },
+            \ ]
+
+let g:startify_bookmarks = [ 
+            \ '~/.config/nvim/init.vim' , 
+            \ '~/.tmux.conf' , 
+            \ '~/.bashrc' 
+            \ ]
+"
+" ---------------------------------------------------------
 "  Nerd tree configuration
 " ---------------------------------------------------------
 nnoremap <C-n> :NERDTreeToggle<CR>
-" nnoremap <C-n> :NERDTreeFind<CR>
+nnoremap <C-f> :NERDTreeFind<CR>
 
 let g:NERDTreeShowHidden = 1
 let g:NERDTreeIgnore = ['node_modules']

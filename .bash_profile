@@ -60,3 +60,8 @@ export PS1="\n\t [${RED}\u${RESET}@${GREEN}\h${RESET}][${YELLOW}\W${RESET}] \$(_
 # exports
 # ------------------------------------------------------------------------------
 export EDITOR=nvim
+
+# ------------------------------------------------------------------------------
+# Don't forget to inform this file has been sourced
+# ------------------------------------------------------------------------------
+echo -e ".bash_profile \t\tfile from $USER loaded"
