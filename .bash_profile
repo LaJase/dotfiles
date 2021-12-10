@@ -62,6 +62,12 @@ export PS1="\n\t [${RED}\u${RESET}@${GREEN}\h${RESET}][${YELLOW}\W${RESET}] \$(_
 export EDITOR=nvim
 
 # ------------------------------------------------------------------------------
+# I want to save my alacritty settings...
+# ------------------------------------------------------------------------------
+cp /mnt/c/Users/Jason/AppData/Roaming/alacritty/alacritty.yml .config/alacritty/alacritty.yml 
+
+
+# ------------------------------------------------------------------------------
 # Don't forget to inform this file has been sourced
 # ------------------------------------------------------------------------------
 echo -e ".bash_profile \t\tfile from $USER loaded"
