@@ -11,8 +11,10 @@
 " ---------------------------------------------------------
 " nvim basic configuration
 " ---------------------------------------------------------
+syntax on
+
 set nocompatible
-set encoding=utf-8
+set encoding=UTF-8
 set t_Co=256
 set nobackup
 set noswapfile
@@ -44,7 +46,6 @@ set cmdheight=2
 set scrolloff=25
 set backspace=indent,eol,start
 
-syntax on
 filetype plugin indent on
 autocmd BufNew,BufNewFile,BufRead *.md setfiletype markdown
 
@@ -75,7 +76,7 @@ nnoremap <leader><Space> :noh<CR>
 " ---------------------------------------------------------
 " Plugins manager
 " ---------------------------------------------------------
-call plug#begin()
+call plug#begin('~/.config/nvim/plugged')
     Plug 'preservim/nerdtree'
     Plug 'preservim/nerdcommenter'
     Plug 'mhinz/vim-startify'
@@ -102,6 +103,10 @@ call plug#begin()
 
     " close symbols
     Plug 'cohama/lexima.vim'
+
+    " For auto completion
+nnoremap ws <C-w>s
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 
 
