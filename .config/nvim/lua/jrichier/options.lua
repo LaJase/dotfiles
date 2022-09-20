@@ -28,6 +28,7 @@ opt.wrap = false -- No Wrap lines
 opt.backspace = { 'start', 'eol', 'indent' }
 opt.path:append { '**' } -- Finding files - Search down into subfolders
 opt.wildignore:append { '*/node_modules/*' }
+opt.termguicolors = true
 
 -- Undercurl
 vim.cmd([[let &t_Cs = "\e[4:3m"]])
@@ -39,5 +40,3 @@ vim.api.nvim_create_autocmd("InsertLeave", {
   command = "set nopaste"
 })
 
--- Add asterisks in block comments
-vim.opt.formatoptions:append { 'r' }

@@ -36,3 +36,4 @@ keymap('n', 'w<left>', '<C-w><', opts)
 keymap('n', 'w<right>', '<C-w>>', opts)
 keymap('n', 'w<up>', '<C-w>-', opts)
 keymap('n', 'w<down>', '<C-w>+', opts)
+
