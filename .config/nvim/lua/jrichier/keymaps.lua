@@ -37,3 +37,6 @@ keymap('n', 'w<right>', '<C-w>>', opts)
 keymap('n', 'w<up>', '<C-w>-', opts)
 keymap('n', 'w<down>', '<C-w>+', opts)
 
+-- Manage buffers_color
+keymap('n','<leader>bo', ':%bd|e#|bd#|NvimTreeToggle<CR>', opts )
+keymap('n', '<leader><space>', ':noh<CR>', opts)

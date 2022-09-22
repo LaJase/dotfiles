@@ -6,6 +6,7 @@ local builtin = require('telescope.builtin')
 
 telescope.setup {
   defaults = {
+    path_display={"smart"},
     mappings = {
       n = {
         ["q"] = actions.close

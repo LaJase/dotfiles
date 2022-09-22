@@ -13,6 +13,7 @@ ts.setup {
   ensure_installed = {
     "tsx",
     "typescript",
+    "javascript",
     "json",
     "yaml",
     "css",
@@ -25,3 +26,6 @@ ts.setup {
     enable = true,
   },
 }
+
+local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+parser_config.tsx.filetype_to_parsername = { "javascript", "typescript.tsx" }
