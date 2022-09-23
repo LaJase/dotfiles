@@ -48,7 +48,8 @@ cmp.setup({
     ["<C-e>"] = cmp.mapping {
       i = cmp.mapping.abort(),
       c = cmp.mapping.close(),
-    }
+    },
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
   },
   completion = {
     keyword_length = 3,

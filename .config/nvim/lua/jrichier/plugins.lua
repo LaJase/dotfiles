@@ -35,7 +35,10 @@ return require('packer').startup(function(use)
   -- Packer can manage itself
   use 'wbthomason/packer.nvim'
 
-  use 'folke/tokyonight.nvim'
+  -- color theme
+  -- use 'folke/tokyonight.nvim'
+  use 'navarasu/onedark.nvim'
+  use 'kyazdani42/nvim-tree.lua'
 
   use 'nvim-lualine/lualine.nvim' -- Status line
   use 'kyazdani42/nvim-web-devicons' -- Be able to use Nerd Font in status line & other
@@ -64,12 +67,10 @@ return require('packer').startup(function(use)
   -- LSP
   use 'neovim/nvim-lspconfig'
   use 'glepnir/lspsaga.nvim'
-  use 'MunifTanjim/prettier.nvim' -- Prettier plugin for Neovim's built-in LSP client
   use "williamboman/mason.nvim"
   use "williamboman/mason-lspconfig.nvim"
 
   use 'jose-elias-alvarez/null-ls.nvim' -- Use Neovim as a language server to inject LSP diagnostics, code actions, and more via Lua 
-
   use 'windwp/nvim-autopairs'
   use 'windwp/nvim-ts-autotag'
 
