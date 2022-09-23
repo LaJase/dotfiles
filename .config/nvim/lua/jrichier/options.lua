@@ -29,6 +29,7 @@ opt.backspace = { 'start', 'eol', 'indent' }
 opt.path:append { '**' } -- Finding files - Search down into subfolders
 opt.wildignore:append { '*/node_modules/*' }
 opt.termguicolors = true
+opt.signcolumn = 'yes:1'
 
 -- Undercurl
 -- vim.cmd([[let &t_Cs = "\e[4:3m"]])

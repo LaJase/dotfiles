@@ -3,6 +3,7 @@ if (not status) then return end
 
 local actions = require('telescope.actions')
 local builtin = require('telescope.builtin')
+local themes = require('telescope.themes')
 
 telescope.setup {
   defaults = {
@@ -34,7 +35,10 @@ telescope.setup {
 local keymap = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }
 keymap("n", "<C-p>", "<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({ previewer = false }))<cr>", opts)
-keymap("n", "\\\\", "<cmd>lua require'telescope.builtin'.buffers(require('telescope.themes').get_dropdown({ previewer = false }))<cr>", opts)
+
+vim.keymap.set('n', ';b', function ()
+  builtin.buffers(themes.get_dropdown({ previewer = false }))
+end)
 
 vim.keymap.set('n', ';r', function()
   builtin.live_grep()
@@ -52,6 +56,21 @@ vim.keymap.set('n', ';e', function()
   builtin.diagnostics()
 end)
 
+vim.keymap.set('n', ';gs', function ()
+  builtin.git_status({
+    initial_mode = "normal",
+  })
+end)
+
+vim.keymap.set('n', ';gc', function ()
+  builtin.git_commit({
+    initial_mode = "normal",
+  })
+end)
+
+vim.keymap.set('n', ';k', function ()
+  builtin.keymaps()
+end)
 
 vim.keymap.set("n", ";f", function()
   telescope.extensions.file_browser.file_browser({

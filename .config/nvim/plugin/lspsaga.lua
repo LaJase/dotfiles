@@ -19,10 +19,10 @@ keymap("n", "<leader>ca", "<cmd>Lspsaga code_action<CR>", { silent = true })
 keymap("v", "<leader>ca", "<cmd>Lspsaga range_code_action<CR>", { silent = true })
 
 -- Rename
-keymap("n", "gr", "<cmd>Lspsaga rename<CR>", { silent = true })
+keymap("n", "<leader>gr", "<cmd>Lspsaga rename<CR>", { silent = true })
 
 -- Definition preview
-keymap("n", "gd", "<cmd>Lspsaga preview_definition<CR>", { silent = true })
+keymap("n", "<leader>gd", "<cmd>Lspsaga peek_definition<CR>", { silent = true })
 
 -- Show line diagnostics
 keymap("n", "<leader>cd", "<cmd>Lspsaga show_line_diagnostics<CR>", { silent = true })
@@ -33,6 +33,11 @@ keymap("n", "<leader>cd", "<cmd>Lspsaga show_cursor_diagnostics<CR>", { silent =
 -- Diagnsotic jump can use `<c-o>` to jump back
 keymap("n", "[e", "<cmd>Lspsaga diagnostic_jump_prev<CR>", { silent = true })
 keymap("n", "]e", "<cmd>Lspsaga diagnostic_jump_next<CR>", { silent = true })
+
+-- if you want pass somc cli command into terminal you can do like this
+-- open lazygit in lspsaga float terminal
+keymap("n", "<space>lg", "<cmd>Lspsaga open_floaterm lazygit<CR>", { silent = true })
+
 
 -- Only jump to error
 keymap("n", "[E", function()
@@ -51,10 +56,6 @@ keymap("n", "K", "<cmd>Lspsaga hover_doc<CR>", { silent = true })
 
 -- Float terminal
 keymap("n", "<A-d>", "<cmd>Lspsaga open_floaterm<CR>", { silent = true })
-
--- if you want pass somc cli command into terminal you can do like this
--- open lazygit in lspsaga float terminal
-keymap("n", "<A-d>", "<cmd>Lspsaga open_floaterm lazygit<CR>", { silent = true })
 
 -- close floaterm
 keymap("t", "<A-d>", [[<C-\><C-n><cmd>Lspsaga close_floaterm<CR>]], { silent = true })
