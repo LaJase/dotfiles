@@ -46,12 +46,15 @@ keymap("n", "<leader>h", "<cmd>nohlsearch<CR>", opts)
 
 -- Manage buffers
 keymap("n", "<S-q>", "<cmd>Bdelete!<CR>", opts)
-keymap('n', '<S-a>', ':%bd|e#|bd#|NvimTreeToggle<CR>', opts )
 keymap('n', '<C-Right>', '<Cmd>BufferLineCycleNext<CR>', opts)
 keymap('n', '<C-Left>', '<Cmd>BufferLineCyclePrev<CR>', opts)
 
 -- Better paste
 keymap("v", "p", '"_dP', opts)
+
+-- delete word in insert_text_mode
+keymap("i", "<C-BS>", "<C-W>", opts)
+keymap("i", "<C-h>", "<C-W>", opts)
 
 -- Stay in indent mode
 keymap("v", "<", "<gv", opts)

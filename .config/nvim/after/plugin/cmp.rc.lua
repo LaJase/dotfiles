@@ -1,43 +1,50 @@
 local status, cmp = pcall(require, "cmp")
 if (not status) then return end
 
+---@diagnostic disable-next-line: unused-local
 local status_ok, cmp_ok = pcall(require, "cmp_nvim_lsp")
 if (not status) then return end
 
+---@diagnostic disable-next-line: unused-local
 local lspkind = require 'lspkind'
 
+-- for snippet like vscode (mainly for tsx)
+---@diagnostic disable-next-line: unused-local
+local vsnip = require("luasnip.loaders.from_vscode").lazy_load()
+local luasnip = require("luasnip")
+
 local kind_icons = {
-    Text = "",
-    Method = "m",
-    Function = "",
-    Constructor = "",
-    Field = "",
-    Variable = "",
-    Class = "",
-    Interface = "",
-    Module = "",
-    Property = "",
-    Unit = "",
-    Value = "",
-    Enum = "",
-    Keyword = "",
-    Snippet = "",
-    Color = "",
-    File = "",
-    Reference = "",
-    Folder = "",
-    EnumMember = "",
-    Constant = "",
-    Struct = "",
-    Event = "",
-    Operator = "",
-    TypeParameter = "",
+  Text = "",
+  Method = "m",
+  Function = "",
+  Constructor = "",
+  Field = "",
+  Variable = "",
+  Class = "",
+  Interface = "",
+  Module = "",
+  Property = "",
+  Unit = "",
+  Value = "",
+  Enum = "",
+  Keyword = "",
+  Snippet = "",
+  Color = "",
+  File = "",
+  Reference = "",
+  Folder = "",
+  EnumMember = "",
+  Constant = "",
+  Struct = "",
+  Event = "",
+  Operator = "",
+  TypeParameter = "",
 }
 
 cmp.setup({
   snippet = {
     expand = function(args)
-      require('luasnip').lsp_expand(args.body)
+      luasnip.lsp_expand(args.body)
     end,
   },
   mapping = {
@@ -52,17 +59,37 @@ cmp.setup({
       c = cmp.mapping.close(),
     },
     ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    ["<Tab>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      elseif has_words_before() then
+        cmp.complete()
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
+    ["<S-Tab>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
   },
   completion = {
-    keyword_length = 3,
+    keyword_length = 1,
   },
   window = {
     completion = cmp.config.window.bordered(),
     documentation = cmp.config.window.bordered(),
   },
   sources = cmp.config.sources({
-    { name = 'nvim_lsp' },
     { name = 'luasnip'},
+    { name = 'nvim_lsp' },
     { name = 'buffer' },
     { name = 'path' },
   }),
@@ -81,4 +108,20 @@ cmp.setup({
       return vim_item
     end,fields = { "kind", "abbr", "menu" },
   }
+})
+
+cmp.setup.cmdline({ '/', '?' }, {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = {
+    { name = 'buffer' }
+  }
+})
+
+cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+    { name = 'path' },
+  }, {
+    { name = 'cmdline' },
+  })
 })

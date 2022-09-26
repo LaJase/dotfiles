@@ -2,9 +2,8 @@ local status, telescope = pcall(require, "telescope")
 if (not status) then return end
 
 local actions = require('telescope.actions')
-local builtin = require('telescope.builtin')
-local themes = require('telescope.themes')
 
+-- For file_browser here are some shortcuts
 telescope.setup {
   defaults = {
     path_display={"smart"},
@@ -35,55 +34,15 @@ telescope.setup {
 local keymap = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }
 keymap("n", "<C-p>", "<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({ previewer = false }))<cr>", opts)
+keymap("n", ";b", "<cmd>lua require'telescope.builtin'.buffers(require('telescope.themes').get_dropdown({ previewer = false }))<cr>", opts)
+keymap("n", ";r", "<cmd>lua require'telescope.builtin'.live_grep()<cr>", opts)
+keymap("n", ";t", "<cmd>lua require'trouble.providers.telescope'.open_with_trouble()<cr>", opts)
+keymap("n", ";e", "<cmd>lua require'telescope.builtin'.diagnostics()<cr>", opts)
+keymap("n", ";;", "<cmd>lua require'telescope.builtin'.resume()<cr>", opts)
+keymap("n", ";k", "<cmd>lua require'telescope.builtin'.keymaps()<cr>", opts)
+keymap("n", ";gs", "<cmd>lua require'telescope.builtin'.git_status({initial_mode = normal})<cr>", opts)
+keymap("n", ";gc", "<cmd>lua require'telescope.builtin'.git_commit({initial_mode = normal})<cr>", opts)
 
-vim.keymap.set('n', ';b', function ()
-  builtin.buffers(themes.get_dropdown({ previewer = false }))
-end)
-
-vim.keymap.set('n', ';r', function()
-  builtin.live_grep()
-end)
-
-vim.keymap.set('n', ';t', function()
-  builtin.help_tags()
-end)
-
-vim.keymap.set('n', ';;', function()
-  builtin.resume()
-end)
-
-vim.keymap.set('n', ';e', function()
-  builtin.diagnostics()
-end)
-
-vim.keymap.set('n', ';gs', function ()
-  builtin.git_status({
-    initial_mode = "normal",
-  })
-end)
-
-vim.keymap.set('n', ';gc', function ()
-  builtin.git_commit({
-    initial_mode = "normal",
-  })
-end)
-
-vim.keymap.set('n', ';k', function ()
-  builtin.keymaps()
-end)
-
-vim.keymap.set("n", ";f", function()
-  telescope.extensions.file_browser.file_browser({
-    respect_gitignore = false,
-    hidden = true,
-    grouped = true,
-    previewer = false,
-    initial_mode = "normal",
-    layout_config = { height = 40 }
-  })
-end)
-
--- For file_browser here are some shortcuts
 -- <cr>: opens the currently selected file, or navigates to the
 -- c: Create file/folder at current path (trailing path
 -- r: Rename multi-selected files/folders

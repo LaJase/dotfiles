@@ -8,6 +8,7 @@ onedark.setup({
     orange = "#cc9057",
     yellow = "#e2b86b",
     red = "#e55561",
+    bg3 = "#3b3f4c",
 
   },
   highlights = {
@@ -19,6 +20,10 @@ onedark.setup({
     TSProperty = {fg = '$red'},
     TSCharacterSpecial = {fg = '$light_grey'},
     TSPunctSpecial = { fg = '$light_grey'},
+
+    -- To enable illminate
+    illuminatedWord = { bg = '$bg3' },
+    illuminateCurWord = { bg = '$bg3' },
   },
 })
 
