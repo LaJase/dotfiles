@@ -13,20 +13,20 @@
 
 # source bashrc file
 if [ -f "${HOME}/.bashrc" ]; then
-    . "${HOME}/.bashrc"
+  . "${HOME}/.bashrc"
 fi
 
 # Alias definitions.
 if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+  . ~/.bash_aliases
 fi
 
 # set PATH so it includes user's private bin if it exists
 if [ -d "${HOME}/bin" ]; then
-    PATH="${HOME}/bin:${PATH}"
+  PATH="${HOME}/bin:${PATH}"
 fi
 if [ -d "${HOME}/.local/bin" ]; then
-    PATH="${HOME}/.local/bin:${PATH}"
+  PATH="${HOME}/.local/bin:${PATH}"
 fi
 
 # Path needed fo GO and so for docker... At least I hope
@@ -70,3 +70,16 @@ export EDITOR=vim
 # Don't forget to inform this file has been sourced
 # ------------------------------------------------------------------------------
 echo -e ".bash_profile \t\tfile from ${USER} loaded"
+
+# ------------------------------------------------------------------------------
+# Important to inform me if changes occurs in dotfiles managed
+# ------------------------------------------------------------------------------
+echo ""
+
+if [[ 1 -le $(yadm status -s | wc -l) ]]; then
+  RED='\033[0;31m'
+  NC='\033[0m' # No Color
+  echo -e "${RED}===================================================="
+  echo -e "Changes detected in config files :"
+  echo -e "====================================================${NC}"
+fi
