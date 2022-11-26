@@ -1,3 +1,15 @@
 [user]
-	name = LaJase
-	email = jason.richier@gmail.com
+	email = jason.richier@soprasteria.com
+	name = Jason Richier
+[credential "https://innersource.soprasteria.com"]
+	helper = 
+	helper = !/usr/bin/glab auth git-credential
+[core]
+	autocrlf = false
+[safe]
+	directory = /mnt/wsl/otherinstance/source/
+	directory = /mnt/wsl/otherinstance/source/npbs-deployment
+	directory = /mnt/wsl/otherinstance/source/npbs-development-environment
+[credential "https://git.navblue.tech"]
+	helper = 
+	helper = !/usr/bin/glab auth git-credential
