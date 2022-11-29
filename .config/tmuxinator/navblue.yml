@@ -67,6 +67,6 @@ windows:
     - docker exec -it pbs bash
     - cd ~pbs/source
   - docker:
-    - docker exec -it pbs-full bash
+    - docker exec -it pbs bash
     - service mysqld start
     - service httpd start
