@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# First install nvim
+sudo apt install -y curl
+
+mkdir -p /tmp/nvim-download
+curl -LO https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.deb
+chmod u+x ./nvim-linux64.deb
+sudo apt install ./nvim-linux64.deb
