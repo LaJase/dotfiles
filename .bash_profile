@@ -69,7 +69,7 @@ export EDITOR=vim
 # ------------------------------------------------------------------------------
 # docker configuration
 # ------------------------------------------------------------------------------
-export DOCKER_HOST="unix://mnt/wsl/shared-docker/docker.sock"
+export DOCKER_HOST="unix:///mnt/wsl/shared-docker/docker.sock"
 
 # ------------------------------------------------------------------------------
 # Don't forget to inform this file has been sourced
