@@ -39,7 +39,8 @@ alias lg2="git log --graph --abbrev-commit --decorate --format=format:'%C(bold b
 # ------------------------------------------------------------------------------
 # alias pour docker
 # ------------------------------------------------------------------------------
-alias docker='docker -H tcp://localhost:2375'
+alias docker-service='sudo service docker'
+
 # ==============================================================================
 # Don't forget to inform this file has been sourced
 # ==============================================================================
