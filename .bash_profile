@@ -67,11 +67,6 @@ export PROMPT_COMMAND='__git_ps1 "\n\t [${RED}\u${RESET}][${YELLOW}\w${RESET}]" 
 export EDITOR=vim
 
 # ------------------------------------------------------------------------------
-# docker configuration
-# ------------------------------------------------------------------------------
-export DOCKER_HOST="unix:///mnt/wsl/shared-docker/docker.sock"
-
-# ------------------------------------------------------------------------------
 # Don't forget to inform this file has been sourced
 # ------------------------------------------------------------------------------
 echo -e ".bash_profile \t\tfile from ${USER} loaded"
