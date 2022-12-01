@@ -82,4 +82,5 @@ if [[ 1 -le $(yadm status -s | wc -l) ]]; then
   echo -e "${RED}===================================================="
   echo -e "Changes detected in config files :"
   echo -e "====================================================${NC}"
+  yadm status
 fi
