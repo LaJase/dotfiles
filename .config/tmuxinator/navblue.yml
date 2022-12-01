@@ -4,10 +4,10 @@ name: navblue
 root: ~/Project/Navblue
 
 # Start container when starting the project
-on_project_start: docker -H tcp://localhost:2375 start pbs
+on_project_start: docker start pbs
 
 # I always forget to stop my container...  
-on_project_stop: docker -H tcp://localhost:2375 stop pbs
+on_project_stop: docker stop pbs
 
 # Optional tmux socket
 # socket_name: foo
@@ -51,18 +51,10 @@ on_project_stop: docker -H tcp://localhost:2375 stop pbs
 # attach: false
 
 windows:
-  - front:
+  - ClassBid:
     - cd npbs-sources/ClassBid
-    - nvim
-  - back-perl:
-    - cd npbs-sources/CLASS/WebArch
-    - nvim
-  - back-Core:
-    - cd npbs-sources/CLASS/Core
-    - nvim
-  - back-code:
-    - cd npbs-sources/CLASS/code
-    - nvim
+  - CLASS:
+    - cd npbs-sources/CLASS
   - docker-source:
     - docker exec -it pbs bash
     - cd ~pbs/source
@@ -70,3 +62,4 @@ windows:
     - docker exec -it pbs bash
     - service mysqld start
     - service httpd start
+
