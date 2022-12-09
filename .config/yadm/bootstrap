@@ -1,9 +1,28 @@
 #!/bin/sh
 
-# First install nvim
-apt install -y curl
+#        _ _____  _____
+#       | |  __ \|_   _|
+#       | | |__| | | |
+#   _   | |  _  /  | |
+#  | |__| | | \ \ _| |_
+#   \____/|_|  \_\_____|
+#
+# This yadm bootstrap file is launch when yadm will clone the dotfile project.
+#
+# The aim of this script is to perform the installation of all my dot files and so all my environment.
 
-mkdir -p /tmp/nvim-download
-curl -LO https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.deb
-chmod a+x ./nvim-linux64.deb
-apt install ./nvim-linux64.deb
+# ---------------------------------------------------------------------------------------------------------------------
+# Neovim installation
+# ---------------------------------------------------------------------------------------------------------------------
+# Curl to download the package
+sudo apt install -y curl
+
+curl -L https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.deb \
+  -o /tmp/nvim-linux64.deb
+
+# Change permission for apt
+chmod a+x /tmp/nvim-linux64.deb
+sudo apt install /tmp/nvim-linux64.deb
+
+# Clean after work
+rm -f /tmp/nvim-linux64.deb
