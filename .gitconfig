@@ -1,15 +1,28 @@
 [user]
 	email = jason.richier@soprasteria.com
 	name = Jason Richier
+[core]
+	autocrlf = false
+
+[difftool]
+  prompt = true
+[diff]
+  tool = nvimdiff
+[difftool "nvimdiff"]
+  cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
+
+[merge]
+  tool = nvimdiff
+  conflictstyle = diff3
+[mergetool]
+  keepBackup = false
+  prompt = true
+[mergetool "nvimdiff"]
+  cmd = "nvim  -d $MERGED $LOCAL $REMOTE -c 'wincmd J | wincmd ='"
+
 [credential "https://innersource.soprasteria.com"]
 	helper = 
 	helper = !/usr/bin/glab auth git-credential
-[core]
-	autocrlf = false
-[safe]
-	directory = /mnt/wsl/otherinstance/source/
-	directory = /mnt/wsl/otherinstance/source/npbs-deployment
-	directory = /mnt/wsl/otherinstance/source/npbs-development-environment
 [credential "https://git.navblue.tech"]
 	helper = 
 	helper = !/usr/bin/glab auth git-credential
