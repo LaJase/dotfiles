@@ -1,73 +1,21 @@
 # LaJase's dotfiles
+
 Warning : Don’t blindly use my settings unless you know what that entails
-To manage it, I use git bare repositories
+To manage it, I use yadm since I'm a lazy boy and because other soultions soen't sems to fit my needs
 
-# How to install it from new machine
-I found all info here : [Atlassian dotfiles tuto](https://www.atlassian.com/git/tutorials/dotfiles)
+# Installation
 
-```shell
-# Clone the git repository
-git clone --bare git@github.com:LaJase/dotfiles.git $HOME/.dotfiles
-
-# Define the alias in the current shell scope 
-alias config='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-
-# Checkout the actual content from the bare repository to your home
-config checkout
+In order to isntall all the dotfiles, run command
+```bash
+yadm clone git@github.com:LaJase/dotfiles.git --boostrap
 ```
 
-At this step you might find this issue
-```
-error: The following untracked working tree files would be overwritten by checkout:
-    .bashrc
-    .gitignore
-Please move or remove them before you can switch branches.
-Aborting
-```
+`--bootsrtap` argument implies the run of Installation script, those installed package are not
+handled on git but are necessary to fully appreciate the environment I want to create for my daily
+work. Nothing is perfect here and I love spending some night to see what can be enhanced here.
 
- I provide you with a possible rough shortcut to move all the offending files automatically to a backup folder:
- ```shell
- mkdir -p .config-backup && \
- config checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | \
- xargs -I{} mv {} .config-backup/{}
+# What's installed
 
-# Then re-run your checkout command
-config checkout
-```
+* Neovim last stable version
 
-If you want to avoid untracked files on git status command :
-```shell
-config config --local status.showUntrackedFiles no
-```
 
-You're done, from now on you can now type config commands to add and update your dotfiles:
-```shell
-config status
-config add .vimrc
-config commit -m "Add vimrc"
-config add .bashrc
-config commit -m "Add bashrc"
-config push
-```
-
-# Script to automatize all commands
-An example of installation script could be :
-```shell
-function config {
-    /usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME $@
-}
-
-git clone --bare git@github.com:LaJase/dotfiles.git $HOME/.dotfiles
-
-config checkout
-if [ $? = 0 ]; then
-    echo "Checked out config.";
-else
-    echo "Backing up pre-existing dot files."
-    mkdir -p ~/.config-backup
-    config checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
-fi
-
-config checkout
-config config status.showUntrackedFiles no
-```
