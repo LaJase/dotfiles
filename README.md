@@ -7,7 +7,7 @@ To manage it, I use yadm since I'm a lazy boy and because other soultions soen't
 
 In order to isntall all the dotfiles, run command
 ```bash
-yadm clone git@github.com:LaJase/dotfiles.git --boostrap
+yadm clone git@github.com:LaJase/dotfiles.git --bootstrap
 ```
 
 `--bootsrtap` argument implies the run of Installation script, those installed package are not
