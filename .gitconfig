@@ -4,12 +4,19 @@
 [core]
 	autocrlf = false
 
+[alias]
+	cm = commit -m
+	br = branch -vv
+	st = status
+	unstage = reset HEAD --
+	dt = difftool
+
 [difftool]
   prompt = true
 [diff]
   tool = nvimdiff
 [difftool "nvimdiff"]
-  cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
+  cmd = "nvim -d $REMOTE $LOCAL"
 
 [merge]
   tool = nvimdiff
@@ -18,7 +25,7 @@
   keepBackup = false
   prompt = true
 [mergetool "nvimdiff"]
-  cmd = "nvim  -d $MERGED $LOCAL $REMOTE -c 'wincmd J | wincmd ='"
+  cmd = "nvim  -d $MERGED $LOCAL $BASE $REMOTE -c 'wincmd J | wincmd ='"
 
 [credential "https://innersource.soprasteria.com"]
 	helper = 

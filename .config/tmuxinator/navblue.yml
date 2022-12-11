@@ -6,7 +6,7 @@ root: ~/Project/Navblue
 # Start container when starting the project
 on_project_start: docker start pbs
 
-# I always forget to stop my container...  
+# I always forget to stop my container...
 on_project_stop: docker stop pbs
 
 # Optional tmux socket
@@ -51,6 +51,8 @@ on_project_stop: docker stop pbs
 # attach: false
 
 windows:
+  - ToDo & Notes:
+    - nvim -O ~/Project/Navblue/Notes.md ~/Project/Navblue/TodoList.md
   - ClassBid:
     - cd npbs-sources/ClassBid
   - CLASS:
@@ -62,4 +64,3 @@ windows:
     - docker exec -it pbs bash
     - service mysqld start
     - service httpd start
-
