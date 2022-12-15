@@ -1,7 +1,7 @@
 # /home/jrichier/.config/tmuxinator/ascs-server.yml
 
 name: navblue
-root: ~/Project/Navblue
+root: ~/Project/Navblue/npbs-sources/
 
 # Start container when starting the project
 on_project_start: docker start pbs
@@ -50,17 +50,12 @@ on_project_stop: docker stop pbs
 # Controls whether the tmux session should be attached to automatically. Defaults to true.
 # attach: false
 
+pre_window: source ~/Project/Navblue/setEnv.sh
+
 windows:
   - ToDo & Notes:
     - nvim -O ~/Project/Navblue/Notes.md ~/Project/Navblue/TodoList.md
   - ClassBid:
-    - cd npbs-sources/ClassBid
+    - cd ClassBid
   - CLASS:
-    - cd npbs-sources/CLASS
-  - docker-source:
-    - docker exec -it pbs bash
-    - cd ~pbs/source
-  - docker:
-    - docker exec -it pbs bash
-    - service mysqld start
-    - service httpd start
+    - cd CLASS
