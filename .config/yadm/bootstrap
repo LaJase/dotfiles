@@ -11,7 +11,48 @@
 #
 # The aim of this script is to perform the installation of all my dot files and so all my environment.
 
-mkdir -p ~/Perso && cd ~/Perso
+dir_build=~/Perso
+mkdir -p ${dir_build}
+
+cd ${dir_build} || { echo "ERROR creating repository to get sources"; exit 1; }
+
+# ---------------------------------------------------------------------------------------------------------------------
+# tmux installation
+# ---------------------------------------------------------------------------------------------------------------------
+# https://github.com/tmux/tmux
+git clone https://github.com/tmux/tmux.git
+if cd tmux; then
+  # Don't forget to install all needed packages
+  sudo apt install -y autoconf automake pkg-config
+
+  sh autogen.sh
+  ./configure
+  make && make install
+fi
+
+# ---------------------------------------------------------------------------------------------------------------------
+# fzf installation
+# ---------------------------------------------------------------------------------------------------------------------
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/Perso/fzf
+if cd ${dir_build}/fzf; then
+  ./install
+fi
+
+# ---------------------------------------------------------------------------------------------------------------------
+# fd installation
+# ---------------------------------------------------------------------------------------------------------------------
+git clone https://github.com/sharkdp/fd ~/Perso/fd
+if cd fd; then
+  sudo apt install -y cargo
+  cargo build
+  cargo test
+  cargo install --path . --root ~/.local
+fi
+
+# ---------------------------------------------------------------------------------------------------------------------
+# shell check installation
+# ---------------------------------------------------------------------------------------------------------------------
+sudo apt install -y shellcheck
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Neovim installation
@@ -28,34 +69,3 @@ sudo apt install /tmp/nvim-linux64.deb
 
 # Clean after work
 rm -f /tmp/nvim-linux64.deb
-
-# ---------------------------------------------------------------------------------------------------------------------
-# tmux installation
-# ---------------------------------------------------------------------------------------------------------------------
-# https://github.com/tmux/tmux
-git clone https://github.com/tmux/tmux.git
-cd tmux
-
-# Don't forget to install all needed packages
-sudo apt install -y autoconf automake pkg-config
-
-sh autogen.sh
-./configure
-make && make install
-
-# ---------------------------------------------------------------------------------------------------------------------
-# fzf installation
-# ---------------------------------------------------------------------------------------------------------------------
-git clone --depth 1 https://github.com/junegunn/fzf.git ~/Perso/fzf
-~/Perso/fzf/install
-
-# ---------------------------------------------------------------------------------------------------------------------
-# fd installation
-# ---------------------------------------------------------------------------------------------------------------------
-git clone https://github.com/sharkdp/fd ~/Perso/fd
-cd fd
-
-sudo apt install -y cargo
-cargo build
-cargo test
-cargo install --path . --root ~/.local
