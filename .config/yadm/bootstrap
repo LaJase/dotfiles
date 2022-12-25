@@ -48,3 +48,14 @@ make && make install
 # ---------------------------------------------------------------------------------------------------------------------
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/Perso/fzf
 ~/Perso/fzf/install
+
+# ---------------------------------------------------------------------------------------------------------------------
+# fd installation
+# ---------------------------------------------------------------------------------------------------------------------
+git clone https://github.com/sharkdp/fd ~/Perso/fd
+cd fd
+
+sudo apt install -y cargo
+cargo build
+cargo test
+cargo install --path . --root ~/.local
