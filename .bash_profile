@@ -62,6 +62,20 @@ export PROMPT_COMMAND='__git_ps1 "\n\t [${RED}\u${RESET}][${YELLOW}\w${RESET}]" 
 # export PS1="\n\A - \w \$(__git_ps1 'branch:%s')\n> "
 
 # ------------------------------------------------------------------------------
+# Setup fzf
+# ------------------------------------------------------------------------------
+if [[ ! "$PATH" == */home/jrichier/Perso/fzf/bin* ]]; then
+  PATH="${PATH:+${PATH}:}/home/jrichier/Perso/fzf/bin"
+fi
+
+# Auto-completion
+# ---------------
+[[ $- == *i* ]] && source "/home/jrichier/Perso/fzf/shell/completion.bash" 2> /dev/null
+
+# Key bindings
+# ------------
+source "/home/jrichier/Perso/fzf/shell/key-bindings.bash"
+# ------------------------------------------------------------------------------
 # exports
 # ------------------------------------------------------------------------------
 export EDITOR=vim
