@@ -69,5 +69,3 @@ export NVM_DIR="$HOME/.nvm"
 # ------------------------------------------------------------------------------
 echo -e ".bashrc \t ok"
 alias se='source ~/.bash_profile'
-
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
