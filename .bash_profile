@@ -32,34 +32,32 @@ fi
 # Path needed fo GO and so for docker... At least I hope
 export PATH=$PATH:/usr/local/go/bin
 
+# init zoxide
+eval "$(zoxide init bash --cmd cd)"
+
 # ------------------------------------------------------------------------------
 #                                Prompt creation
 # ------------------------------------------------------------------------------
-DULL=0
-
-FG_RED=31
-FG_GREEN=32
-FG_YELLOW=33
-FG_BLUE=34
-FG_BLACK=30
-FG_WHITE=37
-FG_NULL=00
-
-ESC="\033"
-NORMAL="\[${ESC}[m\]"
-RESET="\[${ESC}[${DULL};${FG_WHITE};${BG_NULL}m\]"
-
-BLACK="\[${ESC}[${DULL};${FG_BLACK}m\]"
-RED="\[${ESC}[${DULL};${FG_RED}m\]"
-GREEN="\[${ESC}[${DULL};${FG_GREEN}m\]"
-BLUE="\[${ESC}[${DULL};${FG_BLUE}m\]"
-YELLOW="\[${ESC}[${DULL};${FG_YELLOW}m\]"
-
-#export PS1="\n\t [${RED}\u${RESET}][${YELLOW}\W${RESET}] \$(__git_ps1 '%s'):\$ "
-export GIT_PS1_SHOWCOLORHINTS=true
-export GIT_PS1_SHOWUPSTREAM="auto"
-export PROMPT_COMMAND='__git_ps1 "\n\t [${RED}\u${RESET}][${YELLOW}\w${RESET}]" " "'
+# DULL=0
+#
+# FG_RED=31
+# FG_YELLOW=33
+# FG_WHITE=37
+#
+# ESC="\033"
+# RESET="\[${ESC}[${DULL};${FG_WHITE};${BG_NULL}m\]"
+#
+# RED="\[${ESC}[${DULL};${FG_RED}m\]"
+# YELLOW="\[${ESC}[${DULL};${FG_YELLOW}m\]"
+#
+# #export PS1="\n\t [${RED}\u${RESET}][${YELLOW}\W${RESET}] \$(__git_ps1 '%s'):\$ "
+# export GIT_PS1_SHOWCOLORHINTS=true
+# export GIT_PS1_SHOWUPSTREAM="auto"
+# export PROMPT_COMMAND='__git_ps1 "\n\t [${RED}\u${RESET}][${YELLOW}\w${RESET}]" " "'
 # export PS1="\n\A - \w \$(__git_ps1 'branch:%s')\n> "
+
+# use starship prompt
+eval "$(starship init bash)"
 
 # ------------------------------------------------------------------------------
 # Setup fzf

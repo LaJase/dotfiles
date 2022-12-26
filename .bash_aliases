@@ -31,6 +31,11 @@ alias lg2="git log --graph --abbrev-commit --decorate --format=format:'%C(bold b
 # ------------------------------------------------------------------------------
 alias docker-service='sudo service docker'
 
+# ------------------------------------------------------------------------------
+# try something with fzf
+# ------------------------------------------------------------------------------
+alias vimi='vim $(fd --full-path /home/jrichier -H -d 3 | fzf --height 50% -m --layout=reverse)'
+
 # ==============================================================================
 # Don't forget to inform this file has been sourced
 # ==============================================================================
