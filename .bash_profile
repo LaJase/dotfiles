@@ -35,27 +35,6 @@ export PATH=$PATH:/usr/local/go/bin
 # init zoxide
 eval "$(zoxide init bash --cmd cd)"
 
-# ------------------------------------------------------------------------------
-#                                Prompt creation
-# ------------------------------------------------------------------------------
-# DULL=0
-#
-# FG_RED=31
-# FG_YELLOW=33
-# FG_WHITE=37
-#
-# ESC="\033"
-# RESET="\[${ESC}[${DULL};${FG_WHITE};${BG_NULL}m\]"
-#
-# RED="\[${ESC}[${DULL};${FG_RED}m\]"
-# YELLOW="\[${ESC}[${DULL};${FG_YELLOW}m\]"
-#
-# #export PS1="\n\t [${RED}\u${RESET}][${YELLOW}\W${RESET}] \$(__git_ps1 '%s'):\$ "
-# export GIT_PS1_SHOWCOLORHINTS=true
-# export GIT_PS1_SHOWUPSTREAM="auto"
-# export PROMPT_COMMAND='__git_ps1 "\n\t [${RED}\u${RESET}][${YELLOW}\w${RESET}]" " "'
-# export PS1="\n\A - \w \$(__git_ps1 'branch:%s')\n> "
-
 # use starship prompt
 eval "$(starship init bash)"
 
@@ -82,17 +61,3 @@ export EDITOR=vim
 # Don't forget to inform this file has been sourced
 # ------------------------------------------------------------------------------
 echo -e ".bash_profile \t\tfile from ${USER} loaded"
-
-# ------------------------------------------------------------------------------
-# Important to inform me if changes occurs in dotfiles managed
-# ------------------------------------------------------------------------------
-echo ""
-
-if [[ 1 -le $(yadm status -s | wc -l) ]]; then
-  RED='\033[0;31m'
-  NC='\033[0m' # No Color
-  echo -e "${RED}===================================================="
-  echo -e "Changes detected in config files :"
-  echo -e "====================================================${NC}"
-  yadm status
-fi
