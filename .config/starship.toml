@@ -32,7 +32,6 @@ description = "Shows the docker symbol if the current directory has Dockerfile o
 command = "echo 🐳"
 files = ["Dockerfile", "docker-compose.yml", "docker-compose.yaml"]
 when = """ command -v docker &> /dev/null; exit (echo $?); """
-prefix = "on "
 
 # Disable the package module, hiding it from the prompt completely
 [package]
