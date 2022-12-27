@@ -11,11 +11,28 @@ success_symbol = '[➜](bold green)' # The 'success_symbol' segment is being set
 [directory]
 truncation_symbol = "…/"
 
-[custom.foo]
-command = 'echo foo' # shows output of command
-detect_folder = ['/home/jrichier']
-when = ''' test "$HOME" = "$PWD" '''
-format = ' echo [$output]($style)'
+[custom.branch]
+command = "yadm branch --show-current"
+when = """ test "$HOME" == "$PWD" """
+style = "bold purple"
+# current master version of how to specify formats
+format = " on [ $output]($style) via [yadm](bold green) "
+
+[custom.git_status]
+description = "git status which calls git directly"
+command = "~/.local/bin/yadm_status_prompt.sh || true"
+when = """ test "$HOME" == "$PWD" """
+style = "bold yellow"
+# current master version of how to specify formats
+format = "[\\($output\\)]($style) "
+#disabled = true
+
+[custom.docker]
+description = "Shows the docker symbol if the current directory has Dockerfile or docker-compose.yml files"
+command = "echo 🐳"
+files = ["Dockerfile", "docker-compose.yml", "docker-compose.yaml"]
+when = """ command -v docker &> /dev/null; exit (echo $?); """
+prefix = "on "
 
 # Disable the package module, hiding it from the prompt completely
 [package]
