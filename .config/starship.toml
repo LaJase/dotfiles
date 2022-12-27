@@ -24,7 +24,7 @@ command = "~/.local/bin/yadm_status_prompt.sh || true"
 when = """ test "$HOME" == "$PWD" """
 style = "bold yellow"
 # current master version of how to specify formats
-format = "[\\($output\\)]($style) "
+format = "[$output]($style) "
 #disabled = true
 
 [custom.docker]
