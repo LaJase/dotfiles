@@ -116,7 +116,7 @@ spaceship_git_status() {
 
   # changed
   if [[ -n $git_status ]]; then
-  	echo "$git_status"
+    echo "($git_status)"
   fi
 }
 
