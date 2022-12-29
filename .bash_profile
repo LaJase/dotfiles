@@ -29,8 +29,9 @@ if [ -d "${HOME}/.local/bin" ]; then
   PATH="${HOME}/.local/bin:${PATH}"
 fi
 
-# Path needed fo GO and so for docker... At least I hope
+# Path needed fo GO
 export PATH=$PATH:/usr/local/go/bin
+export GOPATH=$HOME/go
 
 # init zoxide
 eval "$(zoxide init bash --cmd cd)"
@@ -60,4 +61,4 @@ export EDITOR=vim
 # ------------------------------------------------------------------------------
 # Don't forget to inform this file has been sourced
 # ------------------------------------------------------------------------------
-echo -e ".bash_profile \t\tfile from ${USER} loaded"
+echo -e ".bash_profile \t ok"

@@ -67,5 +67,5 @@ export NVM_DIR="$HOME/.nvm"
 # ------------------------------------------------------------------------------
 # Don't forget to inform this file has been sourced
 # ------------------------------------------------------------------------------
-echo -e ".bashrc \t\tfile from $USER loaded"
+echo -e ".bashrc \t ok"
 alias se='source ~/.bash_profile'
