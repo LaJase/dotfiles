@@ -11,6 +11,9 @@ success_symbol = '[➜](bold green)' # The 'success_symbol' segment is being set
 [directory]
 truncation_symbol = "…/"
 
+[golang]
+symbol = " "
+
 [custom.branch]
 command = "yadm branch --show-current"
 when = """ test "$HOME" == "$PWD" """
