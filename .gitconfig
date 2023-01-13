@@ -11,6 +11,8 @@
 	unstage = reset HEAD --
 	dt = difftool
 	last = log -1 HEAD
+    sw = !git checkout $(git branch -a | sed "s#remotes/origin/##g" | grep -v HEAD | uniq | fzf --height=~25%)
+    difb = !git dt $(git branch --show-current) $(git branch -a | sed "s#remotes/origin/##g" | grep -v HEAD | uniq | fzf --height=~25%)
 
 [difftool]
   prompt = true
