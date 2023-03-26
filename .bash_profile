@@ -28,6 +28,9 @@ fi
 if [ -d "${HOME}/.local/bin" ]; then
   PATH="${HOME}/.local/bin:${PATH}"
 fi
+if [ -d "/mnt/c/Users/jrichier/bin" ]; then
+  PATH="${PATH}:/mnt/c/Users/jrichier/bin"
+fi
 
 # Path needed fo GO
 export PATH=$PATH:/usr/local/go/bin
