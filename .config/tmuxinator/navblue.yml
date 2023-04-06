@@ -50,12 +50,18 @@ on_project_stop: docker stop pbs
 # Controls whether the tmux session should be attached to automatically. Defaults to true.
 # attach: false
 
-pre_window: source ~/Project/Navblue/setEnv.sh
+#pre_window: source ~/Project/Navblue/setEnv.sh
 
 windows:
-  - ToDo & Notes:
-    - nvim -O ~/Project/Navblue/Notes.md ~/Project/Navblue/TodoList.md
+  - IDP:
+    - cd docker-test-saml-idp
   - ClassBid:
     - cd ClassBid
-  - CLASS:
-    - cd CLASS
+  - WebArch:
+    - cd CLASS/WebArch
+  - code:
+    - cd CLASS/code
+  - PBS:
+    - docker exec -it pbs bash
+    - service mysqld start
+    - service httpd start
