@@ -1,18 +1,19 @@
 [user]
-	email = jason.richier@soprasteria.com
-	name = Jason Richier
+    email = jason.richier@soprasteria.com
+    name = Jason Richier
 [core]
-	autocrlf = false
+    autocrlf = false
 
 [alias]
-	cm = commit -m
-	br = branch -vv
-	st = status
-	unstage = reset HEAD --
-	dt = difftool
-	last = log -1 HEAD
+    cm = commit -m
+    br = branch -vv
+    st = status
+    unstage = reset HEAD --
+    dt = difftool
+    last = log -1 HEAD
     sw = !git checkout $(git branch -a | sed "s#remotes/origin/##g" | grep -v HEAD | uniq | fzf --height=~25%)
     difb = !git dt $(git branch --show-current) $(git branch -a | sed "s#remotes/origin/##g" | grep -v HEAD | uniq | fzf --height=~25%)
+    lg = !git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) -%C(bold yellow)%d%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
 
 [difftool]
   prompt = true
@@ -31,10 +32,10 @@
   cmd = "nvim  -d $MERGED $LOCAL $BASE $REMOTE -c 'wincmd J | wincmd ='"
 
 [credential "https://innersource.soprasteria.com"]
-	helper = 
-	helper = !/usr/bin/glab auth git-credential
+    helper =
+    helper = !/usr/bin/glab auth git-credential
 [credential "https://git.navblue.tech"]
-	helper = 
-	helper = !/usr/bin/glab auth git-credential
+    helper =
+    helper = !/usr/bin/glab auth git-credential
 [safe]
-	directory = /home/jrichier/Project/DataMesh/portfolio-flight-service
+    directory = /home/jrichier/Project/DataMesh/portfolio-flight-service
