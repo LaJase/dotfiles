@@ -4,10 +4,10 @@ name: navblue
 root: ~/Project/Navblue/npbs-sources/
 
 # Start container when starting the project
-on_project_start: docker start pbs
+on_project_start: docker start pbs-rh8
 
 # I always forget to stop my container...
-on_project_stop: docker stop pbs
+on_project_stop: docker stop pbs-rh8
 
 # Optional tmux socket
 # socket_name: foo
@@ -62,6 +62,6 @@ windows:
   - code:
     - cd CLASS/code
   - PBS:
-    - docker exec -it pbs bash
+    - docker exec -it pbs-rh8 bash
     - service mysqld start
     - service httpd start
