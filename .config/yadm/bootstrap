@@ -58,17 +58,13 @@ sudo apt install -y shellcheck
 # Neovim installation
 # ---------------------------------------------------------------------------------------------------------------------
 # Curl to download the package
-sudo apt install -y curl
+sudo apt install -y curl cmake gcc g++ gettext
+git clone https://github.com/neovim/neovim.git ~/Perso/neovim
 
-curl -L https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.deb \
-  -o /tmp/nvim-linux64.deb
-
-# Change permission for apt
-chmod a+x /tmp/nvim-linux64.deb
-sudo apt install /tmp/nvim-linux64.deb
-
-# Clean after work
-rm -f /tmp/nvim-linux64.deb
+if cd neovim; then
+    make CMAKE_BUILD_TYPE=RelWithDebInfo
+    sudo make install
+fi
 
 # ---------------------------------------------------------------------------------------------------------------------
 # zoxide installation
