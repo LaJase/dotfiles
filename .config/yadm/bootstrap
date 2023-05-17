@@ -55,14 +55,14 @@ fi
 # ---------------------------------------------------------------------------------------------------------------------
 # shell check installation
 # ---------------------------------------------------------------------------------------------------------------------
-sudo apt install -y shellcheck
+# sudo apt install -y shellcheck
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Neovim installation
 # ---------------------------------------------------------------------------------------------------------------------
 # I just want to build neovim for my local PC, for containers, I just want the last stable version
 # shellcheck source=/etc/os-release
-. /ets/os-release
+. /etc/os-release
 
 if "ubuntu" == $ID; then
 	# Curl to download the package
