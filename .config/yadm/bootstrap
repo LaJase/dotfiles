@@ -36,7 +36,7 @@ fi
 # ---------------------------------------------------------------------------------------------------------------------
 # fzf installation
 # ---------------------------------------------------------------------------------------------------------------------
-git clone --depth 1 https://github.com/junegunn/fzf.git ~/Perso/fzf
+git clone --depth 1 https://github.com/junegunn/fzf.git "${dir_build}"/fzf
 if cd ${dir_build}/fzf; then
 	./install
 fi
@@ -44,8 +44,8 @@ fi
 # ---------------------------------------------------------------------------------------------------------------------
 # fd installation
 # ---------------------------------------------------------------------------------------------------------------------
-git clone https://github.com/sharkdp/fd ~/Perso/fd
-if cd fd; then
+git clone https://github.com/sharkdp/fd "${dir_build}"/fd
+if cd ${dir_build}/fd; then
 	sudo apt install -y cargo
 	cargo build
 	cargo test
@@ -90,4 +90,6 @@ curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | 
 # ---------------------------------------------------------------------------------------------------------------------
 # starship installation
 # ---------------------------------------------------------------------------------------------------------------------
-curl -sS https://starship.rs/install.sh | sh
+# curl -sS https://starship.rs/install.sh | sh
+curl https://starship.rs/install.sh -o ~/Downloads/install.sh
+sh ~/Downloads/install.sh --yes
