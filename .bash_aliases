@@ -10,11 +10,11 @@
 # ------------------------------------------------------------------------------
 # General aliases
 # ------------------------------------------------------------------------------
-alias ls='ls --color=auto'
-alias ll='ls -lFrt'
+# alias ls='ls --color=auto'
+# alias ll='ls -lFrt'
+alias ll='env EXA_ICON_SPACING=2 exa -lg --icons --sort newest'
+alias exaT='ll -T -I node_modules --git --git-ignore'
 alias scp='scp -q'
-alias lrt='ls -rt'
-alias la='ls -alrt'
 alias less='less -R'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
