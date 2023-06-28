@@ -2,7 +2,7 @@
     email = jason.richier@soprasteria.com
     name = Jason Richier
 [core]
-    autocrlf = false
+	autocrlf = false
 
 [alias]
     cm = commit -m
@@ -19,6 +19,7 @@
   prompt = true
 [diff]
   tool = nvimdiff
+	colorMoved = zebra
 [difftool "nvimdiff"]
   cmd = "nvim -d $LOCAL $REMOTE"
 
@@ -41,3 +42,7 @@
     directory = /home/jrichier/Project/DataMesh/portfolio-flight-service
 [init]
 	defaultBranch = main
+[pull]
+	rebase = true
+[fetch]
+	prune = true
