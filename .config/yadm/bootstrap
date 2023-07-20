@@ -11,9 +11,9 @@
 #
 # The aim of this script is to perform the installation of all my dot files and so all my environment.
 
-<<<<<<< HEAD
-dir_build=~/Perso
+dir_build=~/perso
 mkdir -p ${dir_build}
+mkdir -p ~/download/
 
 cd ${dir_build} || {
 	echo "ERROR creating repository to get sources"
@@ -21,14 +21,40 @@ cd ${dir_build} || {
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
+# Global installations
+# ---------------------------------------------------------------------------------------------------------------------
+sudo apt install -y \
+	autoconf \
+	automake \
+	pkg-config \
+	curl \
+	ninja-build \
+	gettext \
+	cmake \
+	unzip \
+	make \
+	gcc \
+	g++ \
+	python3.10-venv
+
+# ---------------------------------------------------------------------------------------------------------------------
+# Install npm
+# ---------------------------------------------------------------------------------------------------------------------
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+sudo apt install nodejs -y
+
+# ---------------------------------------------------------------------------------------------------------------------
+# Install nvm
+# ---------------------------------------------------------------------------------------------------------------------
+curl -sL https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.0/install.sh -o ~/download/install_nvm.sh
+bash ~/download/install_nvm.sh
+
+# ---------------------------------------------------------------------------------------------------------------------
 # tmux installation
 # ---------------------------------------------------------------------------------------------------------------------
 # https://github.com/tmux/tmux
 git clone https://github.com/tmux/tmux.git
 if cd tmux; then
-	# Don't forget to install all needed packages
-	sudo apt install -y autoconf automake pkg-config
-
 	sh autogen.sh
 	./configure
 	make && make install
@@ -43,52 +69,20 @@ if cd ${dir_build}/fzf; then
 fi
 
 # ---------------------------------------------------------------------------------------------------------------------
-# fd installation
+# Install rust tools
 # ---------------------------------------------------------------------------------------------------------------------
-git clone https://github.com/sharkdp/fd "${dir_build}"/fd
-if cd ${dir_build}/fd; then
-	sudo apt install -y cargo
-	cargo build
-	cargo test
-	cargo install --path . --root ~/.local
-fi
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 # ---------------------------------------------------------------------------------------------------------------------
-# shell check installation
+# Install rg
 # ---------------------------------------------------------------------------------------------------------------------
-# sudo apt install -y shellcheck
+cargo install fd
 
-||||||| parent of 1a00027 (add: tmux and fzf installation)
-=======
-mkdir -p ~/Perso && cd ~/Perso
-
->>>>>>> 1a00027 (add: tmux and fzf installation)
 # ---------------------------------------------------------------------------------------------------------------------
-# Neovim installation
+# Install rg
 # ---------------------------------------------------------------------------------------------------------------------
-# I just want to build neovim for my local PC, for containers, I just want the last stable version
-# shellcheck source=/etc/os-release
-. /etc/os-release
+cargo install rg
 
-if "ubuntu" == $ID; then
-	# Curl to download the package
-	sudo apt install -y curl cmake gcc g++ gettext
-	git clone https://github.com/neovim/neovim.git ~/Perso/neovim
-
-	if cd neovim; then
-		make CMAKE_BUILD_TYPE=RelWithDebInfo
-		sudo make install
-	fi
-elif "debian" == $ID; then
-	mkdir -p ~/.local/bin
-	if cd ~/.local/bin; then
-		wget https://github.com/neovim/neovim/releases/download/stable/nvim.appimage
-		chmod u+x nvim.appimage
-		mv nvim.appimage nvim
-	fi
-fi
-
-<<<<<<< HEAD
 # ---------------------------------------------------------------------------------------------------------------------
 # zoxide installation
 # ---------------------------------------------------------------------------------------------------------------------
@@ -98,32 +92,5 @@ curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | 
 # starship installation
 # ---------------------------------------------------------------------------------------------------------------------
 # curl -sS https://starship.rs/install.sh | sh
-curl https://starship.rs/install.sh -o ~/Downloads/install.sh
-sh ~/Downloads/install.sh --yes
-||||||| parent of 1a00027 (add: tmux and fzf installation)
-# Clean after work
-rm -f /tmp/nvim-linux64.deb
-=======
-# Clean after work
-rm -f /tmp/nvim-linux64.deb
-
-# ---------------------------------------------------------------------------------------------------------------------
-# tmux installation
-# ---------------------------------------------------------------------------------------------------------------------
-# https://github.com/tmux/tmux
-git clone https://github.com/tmux/tmux.git
-cd tmux
-
-# Don't forget to install all needed packages
-sudo apt install -y autoconf automake pkg-config
-
-sh autogen.sh
-./configure
-make && make install
-
-# ---------------------------------------------------------------------------------------------------------------------
-# fzf installation
-# ---------------------------------------------------------------------------------------------------------------------
-git clone --depth 1 https://github.com/junegunn/fzf.git ~/Perso/fzf
-~/Perso/fzf/install
->>>>>>> 1a00027 (add: tmux and fzf installation)
+curl https://starship.rs/install.sh -o ~/download/install.sh
+sh ~/download/install.sh --yes
