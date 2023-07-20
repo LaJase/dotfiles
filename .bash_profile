@@ -13,23 +13,23 @@
 
 # source bashrc file
 if [ -f "${HOME}/.bashrc" ]; then
-  . "${HOME}/.bashrc"
+	. "${HOME}/.bashrc"
 fi
 
 # Alias definitions.
 if [ -f ~/.bash_aliases ]; then
-  . ~/.bash_aliases
+	. ~/.bash_aliases
 fi
 
 # set PATH so it includes user's private bin if it exists
 if [ -d "${HOME}/bin" ]; then
-  PATH="${HOME}/bin:${PATH}"
+	PATH="${HOME}/bin:${PATH}"
 fi
 if [ -d "${HOME}/.local/bin" ]; then
-  PATH="${HOME}/.local/bin:${PATH}"
+	PATH="${HOME}/.local/bin:${PATH}"
 fi
 if [ -d "/mnt/c/Users/jrichier/bin" ]; then
-  PATH="${PATH}:/mnt/c/Users/jrichier/bin"
+	PATH="${PATH}:/mnt/c/Users/jrichier/bin"
 fi
 
 # Path needed fo GO
@@ -46,21 +46,27 @@ eval "$(starship init bash)"
 # ------------------------------------------------------------------------------
 # Setup fzf
 # ------------------------------------------------------------------------------
-if [[ ! "$PATH" == */home/jrichier/Perso/fzf/bin* ]]; then
-  PATH="${PATH:+${PATH}:}/home/jrichier/Perso/fzf/bin"
+if [[ ! "$PATH" == ${HOME}/perso/fzf/bin ]]; then
+	PATH="${PATH:+${PATH}:}${HOME}/perso/fzf/bin"
+
+	# Auto-completion
+	[[ $- == *i* ]] && source "/home/jrichier/perso/fzf/shell/completion.bash" 2>/dev/null
+
+	# Key bindings
+	source "/home/jrichier/perso/fzf/shell/key-bindings.bash"
 fi
 
-# Auto-completion
-# ---------------
-[[ $- == *i* ]] && source "/home/jrichier/Perso/fzf/shell/completion.bash" 2> /dev/null
-
-# Key bindings
-# ------------
-source "/home/jrichier/Perso/fzf/shell/key-bindings.bash"
 # ------------------------------------------------------------------------------
 # exports
 # ------------------------------------------------------------------------------
 export EDITOR=vim
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+
+# Needed for cargo binaries
+. "$HOME/.cargo/env"
 
 # ------------------------------------------------------------------------------
 # Don't forget to inform this file has been sourced
