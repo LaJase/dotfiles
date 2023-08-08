@@ -13,7 +13,7 @@
 # alias ls='ls --color=auto'
 # alias ll='ls -lFrt'
 alias ll='env EXA_ICON_SPACING=2 exa -lg --icons --sort newest'
-alias exaT='ll -T -I node_modules --git --git-ignore'
+alias exaT='ll -T -I node_modules'
 alias scp='scp -q'
 alias less='less -R'
 alias grep='grep --color=auto'
