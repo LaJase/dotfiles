@@ -10,10 +10,10 @@
 # ------------------------------------------------------------------------------
 # General aliases
 # ------------------------------------------------------------------------------
-alias ls='ls --color=auto'
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
+alias ls='eza --icons'
+alias ll='eza -l --group-directories-first --icons --sort=modified'
+alias tree='eza -l --tree'
+
 alias scp='scp -q'
 alias less='less -R'
 alias grep='grep --color=auto'
