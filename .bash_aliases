@@ -18,6 +18,13 @@ alias scp='scp -q'
 alias less='less -R'
 alias grep='grep --color=auto'
 
+# Let's give a try to bat
+alias bat='batcat'
+alias bathelp='bat --plain --language=help'
+help() {
+  "$@" --help 2>&1 | bathelp
+}
+
 # ------------------------------------------------------------------------------
 # try something with fzf
 # ------------------------------------------------------------------------------
