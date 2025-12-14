@@ -1,0 +1,8 @@
+<dead_acute> <C>			: "Ç"	U00C7 # LATIN CAPITAL LETTER C WITH CEDILLA
+<Multi_key> <acute> <C>			: "Ç"	U00C7
+<Multi_key> <apostrophe> <C>		: "Ç"	U00C7
+<Multi_key> <C> <apostrophe>		: "Ç"	U00C7
+<dead_acute> <c>			: "ç"	U00E7 # LATIN SMALL LETTER C WITH CEDILLA
+<Multi_key> <acute> <c>			: "ç"	U00E7
+<Multi_key> <apostrophe> <c>		: "ç"	U00E7
+<Multi_key> <c> <apostrophe>		: "ç"	U00E7
