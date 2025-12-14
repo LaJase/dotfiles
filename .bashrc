@@ -22,6 +22,9 @@ shopt -s checkwinsize
 
 PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
 
+export EDITOR=nvim
+export VISUAL=nvim
+
 # Window title
 case "$TERM" in
 xterm* | rxvt*)
@@ -44,5 +47,10 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 
 # use starship prompt
 eval "$(starship init bash)"
+
+# Everything needed for go dev
+export PATH="/usr/local/go/bin:${PATH}"
+export GOPATH="${HOME}/go"
+export PATH="${GOPATH}/bin:${PATH}"
 
 echo -e ".bashrc \t ok"
