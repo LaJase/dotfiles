@@ -11,7 +11,7 @@
 # General aliases
 # ------------------------------------------------------------------------------
 alias ls='eza --icons'
-alias ll='eza -l --group-directories-first --icons --sort=modified'
+alias ll='eza -l -a --group-directories-first --icons --sort=name'
 alias tree='eza -l --tree'
 
 alias scp='scp -q'

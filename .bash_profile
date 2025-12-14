@@ -9,7 +9,7 @@
 
 # source bashrc file
 if [ -f "${HOME}/.bashrc" ]; then
-  . "$HOME/.bashrc"
+  source "$HOME/.bashrc"
 fi
 
 # set PATH so it includes user's private bin if it exists
@@ -21,7 +21,7 @@ if [ -d "${HOME}/.local/bin" ]; then
   PATH="${HOME}/.local/bin:${PATH}"
 fi
 
-. "$HOME/.cargo/env"
+source "$HOME/.cargo/env"
 
 # ------------------------------------------------------------------------------
 # Don't forget to inform this file has been sourced

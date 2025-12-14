@@ -37,13 +37,13 @@ esac
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # Alias definitions.
-[ -f ~/.bash_aliases ] && source ~/.bash_aliases
+[ -f ~/.bash_aliases ] && source "${HOME}/.bash_aliases"
 
 # Completion
 [ -f /etc/bash_completion ] && source /etc/bash_completion
 
 # fzf
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+[ -f ~/.fzf.bash ] && source "${HOME}/.fzf.bash"
 
 # use starship prompt
 eval "$(starship init bash)"
