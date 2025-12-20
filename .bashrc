@@ -45,12 +45,15 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # fzf
 [ -f ~/.fzf.bash ] && source "${HOME}/.fzf.bash"
 
-# use starship prompt
-eval "$(starship init bash)"
-
 # Everything needed for go dev
 export PATH="/usr/local/go/bin:${PATH}"
 export GOPATH="${HOME}/go"
 export PATH="${GOPATH}/bin:${PATH}"
+
+# use starship prompt
+eval "$(starship init bash)"
+
+# init zoxide
+eval "$(zoxide init bash --cmd cd)"
 
 echo -e ".bashrc \t ok"
