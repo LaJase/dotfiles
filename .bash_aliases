@@ -26,6 +26,18 @@ help() {
 }
 
 # ------------------------------------------------------------------------------
+# Everything needed for ollama
+# ------------------------------------------------------------------------------
+# This a function for ollama systemctl management
+alias om-start='systemctl --user start ollama.service'
+alias om-stop='systemctl --user stop ollama.service'
+alias om-restart='systemctl --user restart ollama.service'
+alias om-status='systemctl --user status ollama.service'
+alias om-enable='systemctl --user enable ollama.service'
+alias om-disable='systemctl --user disable ollama.service'
+alias om-logs='journalctl --user -u ollama.service -f'
+
+# ------------------------------------------------------------------------------
 # try something with fzf
 # ------------------------------------------------------------------------------
 alias vimi='vim $(fd --full-path ~/ -H -d 3 | fzf --height 50% -m --layout=reverse)'
