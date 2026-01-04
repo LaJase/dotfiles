@@ -43,17 +43,33 @@ alias om-logs='journalctl --user -u ollama.service -f'
 sysdock() {
   if [ "$1" = "start" ]; then
     echo "Starting docker ..."
-    sudo systemctl start docker.socket docker.service
+    sudo systemctl start docker.socket docker.service containerd
     echo "Docker started"
   elif [ "$1" = "stop" ]; then
     echo "Stopping docker ..."
-    sudo systemctl stop docker.socket docker.service
+    sudo systemctl stop docker.socket docker.service containerd
     echo "Docker stopped"
   elif [ "$1" = "status" ]; then
-    sudo systemctl status docker.socket docker.service --no-pager
+    sudo systemctl status docker.socket docker.service containerd --no-pager
   else
     echo "Usage: sysdock start|stop|status"
   fi
+}
+
+# ------------------------------------------------------------------------------
+# Claude aliases
+# ------------------------------------------------------------------------------
+alias batclaude='bat --plain --paging=never --language=markdown'
+ask() {
+  claude -p "$*" | glow
+}
+
+explain() {
+  claude -p "Explique ce code en détail:" <"$1" | glow
+}
+
+summarize() {
+  claude -p "Résume ce fichier:" <"$1" | glow
 }
 
 # ------------------------------------------------------------------------------
