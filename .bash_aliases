@@ -38,6 +38,25 @@ alias om-disable='systemctl --user disable ollama.service'
 alias om-logs='journalctl --user -u ollama.service -f'
 
 # ------------------------------------------------------------------------------
+# For docker
+# ------------------------------------------------------------------------------
+sysdock() {
+  if [ "$1" = "start" ]; then
+    echo "Starting docker ..."
+    sudo systemctl start docker.socket docker.service
+    echo "Docker started"
+  elif [ "$1" = "stop" ]; then
+    echo "Stopping docker ..."
+    sudo systemctl stop docker.socket docker.service
+    echo "Docker stopped"
+  elif [ "$1" = "status" ]; then
+    sudo systemctl status docker.socket docker.service --no-pager
+  else
+    echo "Usage: sysdock start|stop|status"
+  fi
+}
+
+# ------------------------------------------------------------------------------
 # try something with fzf
 # ------------------------------------------------------------------------------
 alias vimi='vim $(fd --full-path ~/ -H -d 3 | fzf --height 50% -m --layout=reverse)'
