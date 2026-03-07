@@ -56,4 +56,7 @@ eval "$(starship init bash)"
 # init zoxide
 eval "$(zoxide init bash --cmd cd)"
 
+# opencode
+export PATH=/home/lajase/.opencode/bin:$PATH
+
 echo -e ".bashrc \t ok"
