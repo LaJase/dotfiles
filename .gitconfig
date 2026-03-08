@@ -8,7 +8,7 @@
     cm = commit -m
     br = branch -vv
     st = status
-    unstage = reset HEAD --
+    unstage = restore --staged --
     dt = difftool
     last = log -1 HEAD
     sw = !git checkout $(git branch -a | sed "s#remotes/origin/##g" | grep -v HEAD | uniq | fzf --height=~25%)
@@ -38,11 +38,11 @@
 [credential "https://git.navblue.tech"]
     helper =
     helper = !/usr/bin/glab auth git-credential
-[safe]
-    directory = /home/jrichier/Project/DataMesh/portfolio-flight-service
 [init]
 	defaultBranch = main
 [pull]
 	rebase = true
+[push]
+	autoSetupRemote = true
 [fetch]
 	prune = true
