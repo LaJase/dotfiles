@@ -1,0 +1,159 @@
+#!/bin/bash
+#
+#        _ _____  _____
+#       | |  __ \|_   _|
+#       | | |__| | | |
+#   _   | |  _  /  | |
+#  | |__| | | \ \ _| |_
+#   \____/|_|  \_\_____|
+#
+# update-all — Goal is to automate the update of apt, flatpacks and snaps
+# It also updates the app launcher found on reddit
+# Usage : update-all
+
+set -e
+
+APPGRID_REPO="$HOME/developement/plasma6-applet-appgrid"
+
+DIM='\033[2m'
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+CYAN='\033[0;36m'
+RESET='\033[0m'
+
+sep()  { echo -e "\n${DIM}──────────────────────────────────────────────────────────────${RESET}"; }
+ok()   { echo -e "${GREEN}✓ $1${RESET}"; }
+warn() { echo -e "${YELLOW}⚠ $1${RESET}"; }
+fail() { echo -e "${RED}✗ $1${RESET}"; }
+
+step() {
+	sep
+	echo -e "${CYAN}► $1...${RESET}"
+}
+
+# Update a package manager if available
+# Usage: update_pkg <display-name> <needs-sudo: true|false> <cmd> [args...]
+update_pkg() {
+	local name="$1" use_sudo="$2"
+	shift 2
+	step "Update $name"
+	if command -v "$1" &>/dev/null; then
+		if [ "$use_sudo" = true ]; then sudo "$@"; else "$@"; fi
+		ok "$name up to date"
+	else
+		warn "$name not installed, skipped"
+	fi
+}
+
+# ------------------------------------------------------------------------------
+# Check if sudo is active or not
+# ------------------------------------------------------------------------------
+if ! sudo -n true 2>/dev/null; then
+	echo "Need to authentify before going further"
+	sudo -v || {
+		echo "Authentication failed. Sorry, try again"
+		exit 1
+	}
+fi
+
+(while true; do
+	sudo -v
+	sleep 50
+done) &
+SUDO_KEEP_ALIVE_PID=$!
+
+trap 'kill $SUDO_KEEP_ALIVE_PID' EXIT
+
+# ------------------------------------------------------------------------------
+# APT
+# ------------------------------------------------------------------------------
+step "Update and upgrade APT"
+sudo apt update -qq
+sudo apt upgrade -y
+ok "APT up to date"
+
+# ------------------------------------------------------------------------------
+# FLATPAK / SNAP
+# ------------------------------------------------------------------------------
+update_pkg "Flatpak" false flatpak update --noninteractive -y
+update_pkg "Snap"    true  snap refresh
+
+# ------------------------------------------------------------------------------
+# CARGO
+# ------------------------------------------------------------------------------
+step "Update Cargo packages"
+if command -v cargo &>/dev/null; then
+	if cargo install-update --version &>/dev/null 2>&1; then
+		cargo install-update -a
+		ok "Cargo packages up to date"
+	else
+		warn "cargo-update not installed — run: cargo install cargo-update"
+	fi
+else
+	warn "Cargo not installed, skipped"
+fi
+
+# ------------------------------------------------------------------------------
+# GO
+# ------------------------------------------------------------------------------
+step "Update Go packages"
+if command -v go &>/dev/null; then
+	if command -v go-global-update &>/dev/null; then
+		go-global-update
+		ok "Go packages up to date"
+	else
+		# Fallback: reinstall binaries found in GOPATH/bin
+		GOBIN="${GOPATH:-$HOME/go}/bin"
+		if [ -d "$GOBIN" ] && [ -n "$(ls -A "$GOBIN" 2>/dev/null)" ]; then
+			warn "go-global-update not found — run: go install github.com/Gelio/go-global-update@latest"
+		else
+			warn "No Go binaries found in $GOBIN"
+		fi
+	fi
+else
+	warn "Go not installed, skipped"
+fi
+
+# ------------------------------------------------------------------------------
+# --- APPGRID ---
+# ------------------------------------------------------------------------------
+step "Update AppGrid (plasma6-applet-appgrid)"
+
+if [ ! -d "$APPGRID_REPO" ]; then
+	fail "Directory $APPGRID_REPO not found, AppGrid skipped"
+else
+	cd "$APPGRID_REPO"
+
+	git fetch --tags --quiet
+	CURRENT_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "none")
+	LATEST_TAG=$(git tag --sort=-v:refname | head -1)
+
+	if [ "$CURRENT_TAG" = "$LATEST_TAG" ]; then
+		ok "AppGrid already up to date ($CURRENT_TAG)"
+	else
+		echo "  New version available: $CURRENT_TAG → $LATEST_TAG"
+		INTERMEDIATE=$(git tag --sort=v:refname | awk -v cur="$CURRENT_TAG" -v lat="$LATEST_TAG" '$0==cur{ found=1; next } found && $0==lat{ print; exit } found{ print }')
+		[ -n "$INTERMEDIATE" ] && echo "    ${INTERMEDIATE//$'\n'/$'\n'    }"
+
+		git checkout --quiet "$LATEST_TAG"
+
+		step "Building AppGrid"
+		[ -f build/CMakeCache.txt ] || cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
+		cmake --build build -j"$(nproc)"
+		ok "Build complete"
+
+		step "Installing AppGrid"
+		sudo cmake --install build >/dev/null 2>&1
+
+		ok "AppGrid updated → $LATEST_TAG"
+
+		step "Restarting plasmashell"
+		kquitapp6 plasmashell || true
+		kstart plasmashell
+		ok "plasmashell restarted"
+	fi
+
+fi
+
+echo
