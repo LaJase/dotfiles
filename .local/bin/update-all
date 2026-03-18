@@ -132,7 +132,8 @@ else
 	if [ "$CURRENT_TAG" = "$LATEST_TAG" ]; then
 		ok "AppGrid already up to date ($CURRENT_TAG)"
 	else
-		echo "  New version available: $CURRENT_TAG → $LATEST_TAG"
+		echo -e "  ${GREEN}New version available: $CURRENT_TAG → $LATEST_TAG${RESET}"
+		echo
 		INTERMEDIATE=$(git tag --sort=v:refname | awk -v cur="$CURRENT_TAG" -v lat="$LATEST_TAG" '$0==cur{ found=1; next } found && $0==lat{ print; exit } found{ print }')
 		[ -n "$INTERMEDIATE" ] && echo "    ${INTERMEDIATE//$'\n'/$'\n'    }"
 
