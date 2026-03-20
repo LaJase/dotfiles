@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 #        _ _____  _____
 #       | |  __ \|_   _|
@@ -7,11 +7,11 @@
 #  | |__| | | \ \ _| |_
 #   \____/|_|  \_\_____|
 #
-# update-all — Goal is to automate the update of apt, flatpacks and snaps
+# update-all — Goal is to automate the update of apt, flatpak and snaps
 # It also updates the app launcher found on reddit
 # Usage : update-all
 
-set -e
+set -uo pipefail
 
 APPGRID_REPO="$HOME/developement/plasma6-applet-appgrid"
 
@@ -32,129 +32,250 @@ step() {
 	echo -e "${CYAN}► $1...${RESET}"
 }
 
-# Update a package manager if available
-# Usage: update_pkg <display-name> <needs-sudo: true|false> <cmd> [args...]
-update_pkg() {
-	local name="$1" use_sudo="$2"
-	shift 2
-	step "Update $name"
-	if command -v "$1" &>/dev/null; then
-		if [ "$use_sudo" = true ]; then sudo "$@"; else "$@"; fi
-		ok "$name up to date"
+# Print installed packages indented and dimmed
+# Usage: list_pkgs [--no-header] <cmd> [args...]
+# Use --no-header for commands that don't output a header line (e.g. flatpak list --app)
+list_pkgs() {
+	local start=2
+	if [[ "${1:-}" == "--no-header" ]]; then
+		start=1
+		shift
+	fi
+	echo -e "${DIM}Installed packages:${RESET}"
+	"$@" 2>/dev/null | tail -n +"$start" | while IFS= read -r line; do
+		echo -e "  ${DIM}$line${RESET}"
+	done
+}
+
+declare -A SECTION_STATUS
+declare -a SECTION_ORDER
+
+# A section function may pre-set SECTION_STATUS["$name"]="skip" before returning 0
+# to signal that it was skipped (tool not installed) rather than failed.
+run_section() {
+	local name="$1"
+	local fn="$2"
+	SECTION_ORDER+=("$name")
+	step "$name"
+	if "$fn" "$name"; then
+		SECTION_STATUS["$name"]="${SECTION_STATUS[$name]:-ok}"
 	else
-		warn "$name not installed, skipped"
+		SECTION_STATUS["$name"]="fail"
+		fail "$name failed — continuing"
 	fi
 }
 
-# ------------------------------------------------------------------------------
-# Check if sudo is active or not
-# ------------------------------------------------------------------------------
-if ! sudo -n true 2>/dev/null; then
-	echo "Need to authentify before going further"
-	sudo -v || {
-		echo "Authentication failed. Sorry, try again"
-		exit 1
-	}
-fi
-
-(while true; do
-	sudo -v
-	sleep 50
-done) &
-SUDO_KEEP_ALIVE_PID=$!
-
-trap 'kill $SUDO_KEEP_ALIVE_PID' EXIT
+print_summary() {
+	sep
+	echo -e "${CYAN}► Update summary${RESET}"
+	local section
+	for section in "${SECTION_ORDER[@]}"; do
+		case "${SECTION_STATUS[$section]:-unknown}" in
+		ok) echo -e "  ${GREEN}✓ $section${RESET}" ;;
+		fail) echo -e "  ${RED}✗ $section${RESET}" ;;
+		skip) echo -e "  ${DIM}⊘ $section (not installed)${RESET}" ;;
+		unknown) echo -e "  ${YELLOW}? $section (unknown status)${RESET}" ;;
+		esac
+	done
+	echo
+}
 
 # ------------------------------------------------------------------------------
 # APT
 # ------------------------------------------------------------------------------
-step "Update and upgrade APT"
-sudo apt update -qq
-sudo apt upgrade -y
-ok "APT up to date"
+update_apt() {
+	sudo apt update -qq
+	sudo apt upgrade -y
+	sudo apt-get autoremove -y >/dev/null
+	sudo apt autoclean
+	ok "APT up to date"
+}
 
 # ------------------------------------------------------------------------------
-# FLATPAK / SNAP
+# Flatpak
 # ------------------------------------------------------------------------------
-update_pkg "Flatpak" false flatpak update --noninteractive -y
-update_pkg "Snap"    true  snap refresh
-
-# ------------------------------------------------------------------------------
-# CARGO
-# ------------------------------------------------------------------------------
-step "Update Cargo packages"
-if command -v cargo &>/dev/null; then
-	if cargo install-update --version &>/dev/null 2>&1; then
-		cargo install-update -a
-		ok "Cargo packages up to date"
-	else
-		warn "cargo-update not installed — run: cargo install cargo-update"
+update_flatpak() {
+	local section="$1"
+	if ! command -v flatpak &>/dev/null; then
+		SECTION_STATUS["$section"]="skip"
+		warn "Flatpak not installed, skipped"
+		return 0
 	fi
-else
-	warn "Cargo not installed, skipped"
-fi
+	list_pkgs --no-header flatpak list --app --columns=application,name,version
+	flatpak update -y
+	ok "Flatpak up to date"
+}
 
 # ------------------------------------------------------------------------------
-# GO
+# Snap
 # ------------------------------------------------------------------------------
-step "Update Go packages"
-if command -v go &>/dev/null; then
+update_snap() {
+	local section="$1"
+	if ! command -v snap &>/dev/null; then
+		SECTION_STATUS["$section"]="skip"
+		warn "Snap not installed, skipped"
+		return 0
+	fi
+	list_pkgs snap list
+	sudo snap refresh
+	ok "Snap up to date"
+}
+
+# ------------------------------------------------------------------------------
+# Cargo
+# ------------------------------------------------------------------------------
+update_cargo() {
+	local section="$1"
+	if ! command -v cargo &>/dev/null; then
+		SECTION_STATUS["$section"]="skip"
+		warn "Cargo not installed, skipped"
+		return 0
+	fi
+	if ! cargo install-update --version &>/dev/null; then
+		warn "cargo-update not installed — run: cargo install cargo-update"
+		return 1
+	fi
+	cargo install-update -a
+	ok "Cargo packages up to date"
+}
+
+# ------------------------------------------------------------------------------
+# Go
+# ------------------------------------------------------------------------------
+update_go() {
+	local section="$1"
+	if ! command -v go &>/dev/null; then
+		SECTION_STATUS["$section"]="skip"
+		warn "Go not installed, skipped"
+		return 0
+	fi
 	if command -v go-global-update &>/dev/null; then
 		go-global-update
 		ok "Go packages up to date"
-	else
-		# Fallback: reinstall binaries found in GOPATH/bin
-		GOBIN="${GOPATH:-$HOME/go}/bin"
-		if [ -d "$GOBIN" ] && [ -n "$(ls -A "$GOBIN" 2>/dev/null)" ]; then
-			warn "go-global-update not found — run: go install github.com/Gelio/go-global-update@latest"
-		else
-			warn "No Go binaries found in $GOBIN"
-		fi
+		return 0
 	fi
-else
-	warn "Go not installed, skipped"
-fi
+	local gobin="${GOPATH:-$HOME/go}/bin"
+	if find "$gobin" -maxdepth 1 -mindepth 1 2>/dev/null | grep -q .; then
+		warn "go-global-update not found — run: go install github.com/Gelio/go-global-update@latest"
+		return 1
+	else
+		SECTION_STATUS["$section"]="skip"
+		warn "No Go binaries found in $gobin"
+		return 0
+	fi
+}
 
 # ------------------------------------------------------------------------------
-# --- APPGRID ---
+# AppGrid
 # ------------------------------------------------------------------------------
-step "Update AppGrid (plasma6-applet-appgrid)"
+update_appgrid() {
+	local section="$1"
+	if [[ ! -d "$APPGRID_REPO" ]]; then
+		SECTION_STATUS["$section"]="skip"
+		fail "Directory $APPGRID_REPO not found, AppGrid skipped"
+		return 0
+	fi
 
-if [ ! -d "$APPGRID_REPO" ]; then
-	fail "Directory $APPGRID_REPO not found, AppGrid skipped"
-else
-	cd "$APPGRID_REPO"
+	pushd "$APPGRID_REPO" >/dev/null || return 1
 
 	git fetch --tags --quiet
-	CURRENT_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "none")
-	LATEST_TAG=$(git tag --sort=-v:refname | head -1)
 
-	if [ "$CURRENT_TAG" = "$LATEST_TAG" ]; then
-		ok "AppGrid already up to date ($CURRENT_TAG)"
-	else
-		echo -e "  ${GREEN}New version available: $CURRENT_TAG → $LATEST_TAG${RESET}"
-		echo
-		INTERMEDIATE=$(git tag --sort=v:refname | awk -v cur="$CURRENT_TAG" -v lat="$LATEST_TAG" '$0==cur{ found=1; next } found && $0==lat{ print; exit } found{ print }')
-		[ -n "$INTERMEDIATE" ] && echo "    ${INTERMEDIATE//$'\n'/$'\n'    }"
+	local current_tag latest_tag
+	current_tag=$(git tag --points-at HEAD 2>/dev/null | head -1)
+	latest_tag=$(git tag --sort=-v:refname | head -1)
 
-		git checkout --quiet "$LATEST_TAG"
-
-		step "Building AppGrid"
-		[ -f build/CMakeCache.txt ] || cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
-		cmake --build build -j"$(nproc)"
-		ok "Build complete"
-
-		step "Installing AppGrid"
-		sudo cmake --install build >/dev/null 2>&1
-
-		ok "AppGrid updated → $LATEST_TAG"
-
-		step "Restarting plasmashell"
-		kquitapp6 plasmashell || true
-		kstart plasmashell
-		ok "plasmashell restarted"
+	if [[ -z "$latest_tag" ]]; then
+		warn "No tags found in AppGrid repo"
+		popd >/dev/null || return 1
+		return 1
 	fi
 
+	if [[ "$current_tag" == "$latest_tag" ]]; then
+		ok "AppGrid already up to date ($current_tag)"
+		popd >/dev/null || return 1
+		return 0
+	fi
+
+	echo -e "  ${GREEN}New version available: ${current_tag:-none} → $latest_tag${RESET}"
+
+	# Show intermediate tags
+	local intermediate
+	intermediate=$(git tag --sort=v:refname |
+		awk -v cur="${current_tag:-}" -v lat="$latest_tag" \
+			'$0==cur{ found=1; next } found && $0==lat{ print; exit } found{ print }')
+	if [[ -n "$intermediate" ]]; then
+		echo "    ${intermediate//$'\n'/$'\n'    }"
+	fi
+
+	git checkout --quiet "$latest_tag" || {
+		popd                                >/dev/null  || true
+		return                                                          1
+	}
+
+	step "Building AppGrid"
+	rm -rf build
+	cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr || {
+		popd                                                                   >/dev/null  || true
+		return                                                                                             1
+	}
+	cmake --build build -j"$(nproc)" || {
+		popd                              >/dev/null  || true
+		return                                                        1
+	}
+	ok "Build complete"
+
+	step "Installing AppGrid"
+	sudo cmake --install build >/dev/null || {
+		popd                                    >/dev/null  || true
+		return                                                              1
+	}
+	ok "AppGrid updated → $latest_tag"
+
+	step "Restarting plasmashell"
+	kquitapp6 plasmashell || true
+	kstart plasmashell || {
+		fail                "plasmashell failed to restart"
+		popd                                                      >/dev/null  || return 1
+		return                                                                                    1
+	}
+	ok "plasmashell restarted"
+
+	popd >/dev/null || return 1
+}
+
+# ------------------------------------------------------------------------------
+# Sudo keepalive
+# ------------------------------------------------------------------------------
+if ! sudo -n true 2>/dev/null; then
+	echo "Need to authenticate before going further"
+	sudo -v || {
+		echo     "Authentication failed. Sorry, try again"
+		exit                                                     1
+	}
 fi
 
-echo
+(while true; do
+	sudo        -v
+	sleep                 50
+done                                   ) &
+SUDO_KEEP_ALIVE_PID=$!
+trap 'kill "$SUDO_KEEP_ALIVE_PID"' EXIT
+
+# ------------------------------------------------------------------------------
+# Run all sections
+# ------------------------------------------------------------------------------
+run_section "APT"     update_apt
+run_section "Flatpak" update_flatpak
+run_section "Snap"    update_snap
+run_section "Cargo"   update_cargo
+run_section "Go"      update_go
+run_section "AppGrid" update_appgrid
+
+# ------------------------------------------------------------------------------
+# Summary
+# ------------------------------------------------------------------------------
+print_summary
+
+for section in "${SECTION_ORDER[@]}"; do
+	[[ "${SECTION_STATUS[$section]:-}" == "fail" ]] && exit 1
+done
